@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنفوجرافيك: نظرة شاملة على نظام ERP المتكامل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px;
+            max-height: 400px;
+            width: 100%;
+            max-width: 600px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-node {
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flow-arrow::after {
+            content: '←';
+            font-size: 2rem;
+            line-height: 1;
+            color: #ff6361;
+        }
+         @media (max-width: 767px) {
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+            .flow-arrow::after {
+                 content: '↓';
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Palette Name: Energetic & Playful (Adapted) -->
+    <!-- Chosen Palette: #003f5c, #58508d, #bc5090, #ff6361, #ffa600 -->
+    <!-- NO SVG was used. NO Mermaid JS was used. -->
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#003f5c] mb-2">بناء المستقبل الرقمي لأعمالك</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">نظرة شاملة على نظام إدارة الأعمال المتكامل (ERP) المصمم خصيصًا لتعزيز الكفاءة والنمو.</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <!-- Section 1: Core Architecture & Tech Stack -->
+            <section id="architecture" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-6 text-center">الأساس التقني: بنية قوية لمستقبل واعد</h2>
+                <p class="text-center text-gray-600 mb-8 max-w-4xl mx-auto">
+                    يعتمد النظام على بنية (Modular Monolith) التي تجمع بين قوة الأداء وسهولة الصيانة، مع استخدام أحدث التقنيات لضمان تجربة مستخدم استثنائية وأمان لا يضاهى.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-[#ff6361]">
+                        <div class="text-5xl mb-3">🖥️</div>
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-2">الواجهة الأمامية</h3>
+                        <p class="text-gray-700">تطبيق صفحة واحدة (SPA) باستخدام <span class="font-bold text-[#ff6361]">React.js</span> لواجهة سريعة وتفاعلية.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-[#ffa600]">
+                        <div class="text-5xl mb-3">⚙️</div>
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-2">الواجهة الخلفية</h3>
+                        <p class="text-gray-700">واجهة برمجة تطبيقات (API) قوية مبنية على <span class="font-bold text-[#ffa600]">Node.js</span> لأداء فائق.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-[#58508d]">
+                        <div class="text-5xl mb-3">🗃️</div>
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-2">قاعدة البيانات</h3>
+                        <p class="text-gray-700">نظام <span class="font-bold text-[#58508d]">PostgreSQL</span> لضمان تكامل البيانات وأمانها.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: KPIs & Module Overview -->
+            <section id="kpis" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="lg:col-span-1 flex flex-col justify-center items-center space-y-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 text-center w-full">
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-2">النظام في أرقام</h3>
+                        <p class="text-7xl font-extrabold text-[#ff6361]">8</p>
+                        <p class="text-xl text-gray-600">وحدات وظيفية متكاملة</p>
+                    </div>
+                     <div class="bg-white rounded-2xl shadow-lg p-8 text-center w-full">
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-2">جاهزية كاملة</h3>
+                        <p class="text-7xl font-extrabold text-[#ffa600]">100%</p>
+                        <p class="text-xl text-gray-600">دعم للغة العربية و RTL</p>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#003f5c] mb-4 text-center">توزيع الوظائف على الوحدات</h3>
+                     <p class="text-center text-gray-600 mb-6">
+                        يوفر النظام تغطية شاملة لكافة جوانب العمل. يوضح الرسم البياني التالي التوزيع النسبي للميزات والوظائف عبر الوحدات الرئيسية، مما يبرز شمولية وحدة المحاسبة والمخزون.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="modulesDonutChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Feature Comparison -->
+            <section id="features" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-4 text-center">مقارنة بين الوحدات الوظيفية</h2>
+                <p class="text-center text-gray-600 mb-8 max-w-4xl mx-auto">
+                    تم تصميم كل وحدة لتقدم مجموعة غنية من الميزات المتخصصة. يقارن الرسم البياني الشريطي التالي حجم الوظائف الرئيسية في كل وحدة، مما يعكس عمق كل جزء من النظام.
+                </p>
+                <div class="chart-container" style="max-width: 900px;">
+                    <canvas id="featuresBarChart"></canvas>
+                </div>
+            </section>
+            
+            <!-- Section 4: Integrated Workflow -->
+            <section id="workflow">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-4 text-center">مثال على دورة عمل متكاملة: المبيعات</h2>
+                 <p class="text-center text-gray-600 mb-8 max-w-4xl mx-auto">
+                    تتجلى قوة النظام في تكامل وحداته. يوضح المخطط التالي دورة المبيعات، حيث تتدفق البيانات بسلاسة من عرض السعر الأولي إلى الفاتورة النهائية، محدّثة المخزون والحسابات تلقائياً في كل خطوة.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0">
+                    <div class="flow-node bg-white shadow-lg p-4 rounded-lg border-b-4 border-[#003f5c] text-center w-48">
+                        <p class="font-bold text-lg">عرض سعر</p>
+                        <p class="text-sm text-gray-500">وحدة المبيعات</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node bg-white shadow-lg p-4 rounded-lg border-b-4 border-[#58508d] text-center w-48">
+                        <p class="font-bold text-lg">أمر بيع</p>
+                        <p class="text-sm text-gray-500">تأكيد الطلب</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node bg-white shadow-lg p-4 rounded-lg border-b-4 border-[#bc5090] text-center w-48">
+                        <p class="font-bold text-lg">إذن صرف</p>
+                        <p class="text-sm text-gray-500">وحدة المخزون</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node bg-white shadow-lg p-4 rounded-lg border-b-4 border-[#ff6361] text-center w-48">
+                        <p class="font-bold text-lg">فاتورة</p>
+                        <p class="text-sm text-gray-500">وحدة المحاسبة</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 5: Security Flow -->
+            <section id="security" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-4 text-center">الأمان: حصن منيع لبياناتك</h2>
+                 <p class="text-center text-gray-600 mb-8 max-w-4xl mx-auto">
+                    الأمان ليس ميزة إضافية، بل هو أساس التصميم. يوضح المخطط كيف يتعامل النظام مع كل طلب، حيث يتم التحقق من هوية المستخدم وصلاحياته بدقة قبل السماح بالوصول للبيانات.
+                </p>
+                 <div class="flex flex-col md:flex-row justify-around items-center gap-4 md:gap-0 bg-gray-50 p-6 rounded-lg">
+                    <div class="flow-node text-center">
+                         <p class="text-4xl">👤</p>
+                         <p class="font-bold text-lg">طلب من المستخدم</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node text-center bg-green-100 p-4 rounded-lg">
+                         <p class="text-4xl">🔑</p>
+                        <p class="font-bold text-lg">التحقق من التوكن (JWT)</p>
+                        <p class="text-sm text-green-700">Authentication</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node text-center bg-blue-100 p-4 rounded-lg">
+                         <p class="text-4xl">🛡️</p>
+                        <p class="font-bold text-lg">فحص الصلاحيات (RBAC)</p>
+                        <p class="text-sm text-blue-700">Authorization</p>
+                    </div>
+                    <div class="flow-arrow mx-4"></div>
+                    <div class="flow-node text-center">
+                         <p class="text-4xl">✅</p>
+                        <p class="font-bold text-lg">الوصول للبيانات</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <p class="text-gray-600">&copy; 2025 - تصميم نظام ERP متكامل. جميع الحقوق محفوظة.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function wrapLabel(label, maxLength = 16) {
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const chartColors = ['#003f5c', '#58508d', '#bc5090', '#ff6361', '#ffa600', '#2f4b7c', '#665191', '#a05195'];
+
+        // Donut Chart: Modules Overview
+        const donutCtx = document.getElementById('modulesDonutChart').getContext('2d');
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['المحاسبة', 'المخزون والمخازن', 'المبيعات والمشتريات', 'الموارد البشرية', 'نقاط البيع', 'العملاء والموردين', 'الصادرات والواردات'],
+                datasets: [{
+                    label: 'توزيع الوظائف',
+                    data: [25, 20, 18, 15, 10, 7, 5],
+                    backgroundColor: chartColors,
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                             font: {
+                                family: "'Cairo', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        },
+                        bodyFont: {
+                            family: "'Cairo', sans-serif"
+                        },
+                        titleFont: {
+                           family: "'Cairo', sans-serif"
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Bar Chart: Feature Comparison
+        const barCtx = document.getElementById('featuresBarChart').getContext('2d');
+        const barLabels = ['إدارة المحاسبة', 'إدارة المخزون والمخازن', 'نقاط البيع (POS)', 'إدارة الموردين والعملاء', 'الموارد البشرية', 'المبيعات والمشتريات', 'الصادرات والواردات'];
+        
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: barLabels.map(label => wrapLabel(label)),
+                datasets: [{
+                    label: 'عدد الميزات الرئيسية',
+                    data: [18, 16, 12, 10, 14, 15, 9],
+                    backgroundColor: chartColors,
+                    borderColor: chartColors.map(color => color + 'B3'),
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                             font: {
+                                family: "'Cairo', sans-serif"
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                             font: {
+                                family: "'Cairo', sans-serif"
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                       display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        },
+                         bodyFont: {
+                            family: "'Cairo', sans-serif"
+                        },
+                        titleFont: {
+                           family: "'Cairo', sans-serif"
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

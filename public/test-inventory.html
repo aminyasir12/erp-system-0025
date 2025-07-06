@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار أزرار إضافة المنتج</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .btn-test {
+            margin: 10px;
+            padding: 15px 25px;
+            font-size: 16px;
+        }
+        .log-container {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-info { background-color: #d1ecf1; }
+        .log-success { background-color: #d4edda; }
+        .log-warning { background-color: #fff3cd; }
+        .log-error { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2 class="text-center mb-4">اختبار أزرار إضافة المنتج</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h4>الأزرار:</h4>
+                <button type="button" id="quickAddProductBtn" class="btn btn-outline-success btn-test">
+                    <i class="fas fa-plus"></i> إضافة منتج سريع
+                </button>
+                <br>
+                <button type="button" id="fullAddProductBtn" class="btn btn-outline-primary btn-test">
+                    <i class="fas fa-plus-circle"></i> إضافة منتج كامل
+                </button>
+            </div>
+            
+            <div class="col-md-6">
+                <h4>نموذج الإضافة السريعة:</h4>
+                <div id="quickAddProductContainer" style="display: none;">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-plus"></i> إضافة منتج جديد</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">اسم المنتج الجديد <span class="text-danger">*</span></label>
+                                <input type="text" id="quickProductName" class="form-control" placeholder="أدخل اسم المنتج الجديد">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">الفئة</label>
+                                    <select id="quickProductCategory" class="form-select">
+                                        <option value="عام">عام</option>
+                                        <option value="إلكترونيات">إلكترونيات</option>
+                                        <option value="ملحقات">ملحقات</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">الحد الأدنى للمخزون</label>
+                                    <input type="number" id="quickProductMinStock" class="form-control" value="5" min="0">
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" id="confirmQuickAddBtn" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i> تأكيد الإضافة
+                                </button>
+                                <button type="button" id="cancelQuickAddBtn" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-times"></i> إلغاء
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="log-container">
+            <h5>سجل الأحداث:</h5>
+            <div id="logOutput"></div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة منتج جديد -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة منتج جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="mb-3">
+                            <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
+                            <input type="text" id="productName" name="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">الفئة</label>
+                                    <select id="productCategory" name="category" class="form-select">
+                                        <option value="إلكترونيات">إلكترونيات</option>
+                                        <option value="ملحقات">ملحقات</option>
+                                        <option value="عام">عام</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">الرمز (SKU)</label>
+                                    <input type="text" id="productSku" name="sku" class="form-control" placeholder="سيتم إنشاؤه تلقائيًا">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">سعر التكلفة <span class="text-danger">*</span></label>
+                                    <input type="number" id="productCostPrice" name="costPrice" class="form-control" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">سعر البيع <span class="text-danger">*</span></label>
+                                    <input type="number" id="productSellingPrice" name="sellingPrice" class="form-control" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">المخزون الأولي</label>
+                                    <input type="number" id="productInitialStock" name="quantity" class="form-control" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">الحد الأدنى للمخزون</label>
+                                    <input type="number" id="productMinStock" name="minQuantity" class="form-control" min="0" value="5">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">صورة المنتج</label>
+                            <input type="text" id="productImage" name="image" class="form-control" placeholder="رابط الصورة (اختياري)">
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" id="saveProductBtn" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> حفظ المنتج
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/inventory.js"></script>
+    
+    <script>
+        // دالة لإضافة رسائل إلى السجل
+        function addLog(message, type = 'info') {
+            const logOutput = document.getElementById('logOutput');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `<strong>${new Date().toLocaleTimeString()}:</strong> ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        // إضافة مستمعات الأحداث للاختبار
+        document.addEventListener('DOMContentLoaded', () => {
+            addLog('تم تحميل الصفحة', 'success');
+            
+            // اختبار الأزرار مباشرة
+            const quickAddBtn = document.getElementById('quickAddProductBtn');
+            const fullAddBtn = document.getElementById('fullAddProductBtn');
+            
+            if (quickAddBtn) {
+                quickAddBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addLog('تم النقر على زر إضافة منتج سريع', 'info');
+                    
+                    // اختبار الدالة مباشرة
+                    if (window.inventoryManager) {
+                        window.inventoryManager.showQuickAddProductForm();
+                        addLog('تم استدعاء showQuickAddProductForm', 'success');
+                    } else {
+                        addLog('مدير المخزون غير متوفر', 'error');
+                    }
+                });
+            }
+            
+            if (fullAddBtn) {
+                fullAddBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addLog('تم النقر على زر إضافة منتج كامل', 'info');
+                    
+                    // اختبار الدالة مباشرة
+                    if (window.inventoryManager) {
+                        window.inventoryManager.showAddProductPrompt();
+                        addLog('تم استدعاء showAddProductPrompt', 'success');
+                    } else {
+                        addLog('مدير المخزون غير متوفر', 'error');
+                    }
+                });
+            }
+            
+            // مراقبة تهيئة مدير المخزون
+            setTimeout(() => {
+                if (window.inventoryManager) {
+                    addLog('تم تهيئة مدير المخزون بنجاح', 'success');
+                } else {
+                    addLog('فشل في تهيئة مدير المخزون', 'error');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

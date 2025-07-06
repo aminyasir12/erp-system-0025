@@ -1,0 +1,77 @@
+doctype html
+html(lang='ar' dir='rtl')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title= `${subject}`
+    style
+      | /* تنسيقات CSS المضمنة */
+      | body {
+      |   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      |   line-height: 1.6;
+      |   color: #333;
+      |   direction: rtl;
+      |   text-align: right;
+      |   background-color: #f5f7fa;
+      |   margin: 0;
+      |   padding: 0;
+      | }
+      | .container {
+      |   max-width: 600px;
+      |   margin: 0 auto;
+      |   padding: 20px;
+      |   background-color: #ffffff;
+      |   border-radius: 8px;
+      |   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      | }
+      | .header {
+      |   text-align: center;
+      |   padding: 20px 0;
+      |   border-bottom: 1px solid #eee;
+      | }
+      | .header img {
+      |   max-width: 150px;
+      |   height: auto;
+      | }
+      | .content {
+      |   padding: 20px 0;
+      | }
+      | .footer {
+      |   text-align: center;
+      |   padding: 20px 0 0;
+      |   border-top: 1px solid #eee;
+      |   font-size: 14px;
+      |   color: #777;
+      | }
+      | .btn {
+      |   display: inline-block;
+      |   padding: 12px 24px;
+      |   margin: 20px 0;
+      |   background-color: #3498db;
+      |   color: #ffffff;
+      |   text-decoration: none;
+      |   border-radius: 6px;
+      |   font-weight: bold;
+      | }
+      | .btn:hover {
+      |   background-color: #2980b9;
+      | }
+      | .text-muted {
+      |   color: #777;
+      |   font-size: 14px;
+      |   margin-top: 30px;
+      |   padding-top: 15px;
+      |   border-top: 1px solid #eee;
+      | }
+
+  body
+    .container
+      .header
+        h1 نظام إدارة الأعمال
+      
+      block content
+      
+      .footer
+        p جميع الحقوق محفوظة © 2025 نظام إدارة الأعمال
+        p.text-muted
+          | هذه رسالة آلية، يرجى عدم الرد عليها. إذا كنت تعتقد أنك تلقيت هذه الرسالة عن طريق الخطأ، فيمكنك تجاهلها بأمان.

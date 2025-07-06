@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة الأعمال المتكامل</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/main-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* --- Global Styles & ERP-Inspired Variables (Consistent) --- */
+:root {
+  --erp-primary-color: #714B67;
+  --erp-primary-color-dark: #583A50;
+  --erp-primary-color-light: rgba(113, 75, 103, 0.1);
+  --erp-secondary-color: #4A5568;
+  --erp-success-color: #38A169;
+  --erp-warning-color: #DD6B20;
+  --erp-danger-color: #E53E3E;
+  --erp-info-color: #3182CE;
+
+  --erp-body-bg: #F7FAFC;
+  --erp-content-bg: #FFFFFF;
+  --erp-header-bg: var(--erp-content-bg); /* Can be different if needed, e.g., --erp-primary-color */
+  --erp-header-text-color: var(--erp-text-color);
+  --erp-footer-bg: #F8F9FA;
+  --erp-sidebar-bg: var(--erp-content-bg); /* Sidebar within main content area */
+  --erp-sidebar-border-color: var(--erp-border-color);
+
+  --erp-text-color: #2D3748;
+  --erp-text-muted-color: #718096;
+  --erp-border-color: #E2E8F0;
+
+  --erp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --erp-font-size-base: 14px;
+  --erp-border-radius: 4px;
+  --erp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --erp-header-height: 60px;
+  --erp-sidebar-width: 230px;
+}
+
+body {
+  font-family: var(--erp-font-family);
+  background-color: var(--erp-body-bg);
+  color: var(--erp-text-color);
+  margin: 0;
+  font-size: var(--erp-font-size-base);
+  line-height: 1.5;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- App Header (Top Navigation Bar) --- */
+.app-header {
+  height: var(--erp-header-height);
+  background-color: var(--erp-header-bg);
+  color: var(--erp-header-text-color);
+  border-bottom: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  position: sticky; /* Make header sticky */
+  top: 0;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.app-header .logo {
+  flex-shrink: 0;
+  margin-left: 30px; /* For RTL */
+}
+
+.app-header .logo h1 {
+  margin: 0;
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--erp-primary-color); /* Or --erp-header-text-color */
+}
+
+.app-header .main-nav {
+  flex-grow: 1;
+}
+
+.app-header .main-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 5px; /* Small gap between main nav items */
+}
+
+.app-header .main-nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem; /* Consistent padding */
+  text-decoration: none;
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+  font-size: 0.95em;
+  border-radius: var(--erp-border-radius);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-header .main-nav ul li a i {
+  margin-left: 8px; /* For RTL */
+  font-size: 1.05em;
+}
+
+.app-header .main-nav ul li a:hover,
+.app-header .main-nav ul li a.active { /* Add .active class via JS */
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color);
+}
+
+.app-header .user-menu {
+  position: relative;
+  margin-right: auto; /* Push to the right for RTL */
+}
+
+.app-header .user-menu button#userMenuBtn {
+  background: none;
+  border: none;
+  color: var(--erp-text-color);
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--erp-border-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--erp-font-family);
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.app-header .user-menu button#userMenuBtn:hover {
+  background-color: var(--erp-primary-color-light);
+}
+
+.app-header .user-menu button#userMenuBtn i.fa-user-circle {
+  font-size: 1.4em;
+  color: var(--erp-primary-color);
+}
+.app-header .user-menu button#userMenuBtn i.fa-chevron-down {
+  font-size: 0.8em;
+  color: var(--erp-text-muted-color);
+  transition: transform 0.2s ease;
+}
+.app-header .user-menu button#userMenuBtn.open i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+
+.app-header .user-menu .dropdown-menu {
+  display: none; /* Controlled by JS */
+  position: absolute;
+  top: calc(100% + 5px); /* Position below button */
+  left: 0; /* For RTL */
+  background-color: var(--erp-content-bg);
+  border: 1px solid var(--erp-border-color);
+  border-radius: var(--erp-border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 1010;
+  padding: 5px 0;
+}
+.app-header .user-menu .dropdown-menu.show {
+    display: block;
+}
+
+
+.app-header .user-menu .dropdown-menu a {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: var(--erp-text-color);
+  font-size: 0.9em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-header .user-menu .dropdown-menu a i {
+  margin-left: 10px; /* For RTL */
+  width: 16px;
+  text-align: center;
+  color: var(--erp-text-muted-color);
+}
+
+.app-header .user-menu .dropdown-menu a:hover {
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color);
+}
+.app-header .user-menu .dropdown-menu a:hover i {
+    color: var(--erp-primary-color);
+}
+
+
+/* --- App Main Content Area --- */
+.app-main {
+  flex-grow: 1;
+  display: flex;
+  overflow: hidden; /* Prevent double scrollbars if sidebar scrolls */
+}
+
+/* --- Sidebar within Main Content --- */
+.app-main .sidebar {
+  width: var(--erp-sidebar-width);
+  background-color: var(--erp-sidebar-bg);
+  border-left: 1px solid var(--erp-sidebar-border-color); /* For RTL */
+  padding: 20px 0; /* Vertical padding */
+  overflow-y: auto;
+  flex-shrink: 0;
+  height: calc(100vh - var(--erp-header-height) - var(--erp-header-height)); /* Approximate, adjust if footer height changes */
+  position: sticky; /* Make sidebar sticky within app-main */
+  top: var(--erp-header-height);
+}
+
+.app-main .sidebar-section {
+  padding: 0 15px; /* Horizontal padding for section content */
+}
+.app-main .sidebar-section:not(:last-child) {
+    margin-bottom: 25px;
+}
+
+.app-main .sidebar-section h3 {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--erp-text-muted-color);
+  text-transform: uppercase;
+  margin: 0 0 10px 0;
+  padding: 0 5px; /* Small padding for heading */
+}
+
+.app-main .sidebar-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.app-main .sidebar-section ul li a {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: var(--erp-text-color);
+  font-size: 0.95em;
+  border-radius: var(--erp-border-radius);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  margin-bottom: 3px; /* Small gap between items */
+}
+
+.app-main .sidebar-section ul li a i {
+  margin-left: 10px; /* For RTL */
+  width: 18px;
+  text-align: center;
+  color: var(--erp-text-muted-color);
+  transition: color 0.15s ease;
+}
+
+.app-main .sidebar-section ul li a:hover {
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color);
+}
+.app-main .sidebar-section ul li a:hover i {
+  color: var(--erp-primary-color);
+}
+.app-main .sidebar-section ul li a.active { /* Add .active via JS */
+  background-color: var(--erp-primary-color);
+  color: #FFF;
+  font-weight: 500;
+}
+.app-main .sidebar-section ul li a.active i {
+  color: #FFF;
+}
+.app-main .sidebar-section ul li a.coming-soon {
+  color: var(--erp-text-muted-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.app-main .sidebar-section ul li a.coming-soon:hover {
+  background-color: transparent;
+  color: var(--erp-text-muted-color);
+}
+
+
+/* --- Main Content Area (.content) --- */
+.app-main .content {
+  flex-grow: 1;
+  padding: 25px;
+  overflow-y: auto;
+  background-color: var(--erp-body-bg); /* Ensure content area has body bg if different */
+}
+
+#app {
+  /* This will hold the dynamic content. Styling will depend on the loaded content. */
+}
+
+.welcome-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  background-color: var(--erp-content-bg);
+  border-radius: var(--erp-border-radius);
+  border: 1px dashed var(--erp-border-color); /* Dashed border for placeholder */
+  min-height: 300px; /* Ensure it has some height */
+}
+
+.welcome-message h2 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin-bottom: 15px;
+}
+
+.welcome-message p {
+  font-size: 1.1em;
+  color: var(--erp-text-muted-color);
+  max-width: 500px;
+}
+
+/* --- App Footer --- */
+.app-footer {
+  height: var(--erp-header-height); /* Or a different fixed height */
+  background-color: var(--erp-footer-bg);
+  color: var(--erp-text-muted-color);
+  border-top: 1px solid var(--erp-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 25px;
+  font-size: 0.85em;
+  flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+/* --- Scrollbar (Consistent) --- */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* Track can be transparent if sidebar/content scrolls */
+}
+.app-main .sidebar::-webkit-scrollbar-track,
+.app-main .content::-webkit-scrollbar-track {
+    background-color: var(--erp-body-bg); /* Or a slightly darker shade */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #BCC1C8;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A0A6AD;
+}
+
+/* --- Placeholder (Consistent) --- */
+::placeholder {
+  color: #A0AEC0;
+  opacity: 1;
+}
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo">
+        <h1>نظام إدارة الأعمال</h1>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/dashboard"><i class="fas fa-home"></i> الرئيسية</a></li>
+          <li><a href="/invoices"><i class="fas fa-file-invoice"></i> الفواتير</a></li>
+          <li><a href="/inventory"><i class="fas fa-boxes"></i> المخزون</a></li>
+          <li><a href="/customers"><i class="fas fa-users"></i> العملاء</a></li>
+          <li><a href="/reports"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+        </ul>
+      </nav>
+      <div class="user-menu">
+        <button id="userMenuBtn">
+          <i class="fas fa-user-circle"></i>
+          <span id="username">المستخدم</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu" id="userDropdown">
+          <a href="/profile"><i class="fas fa-user"></i> الملف الشخصي</a>
+          <a href="/settings"><i class="fas fa-cog"></i> الإعدادات</a>
+          <a href="/logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <h3>القائمة الرئيسية</h3>
+          <ul>
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+            <li><a href="#" class="coming-soon"><i class="fas fa-shopping-cart"></i> المبيعات (قريباً)</a></li>
+            <li><a href="purchases.html"><i class="fas fa-shopping-bag"></i> المشتريات</a></li>
+            <li><a href="inventory.html"><i class="fas fa-warehouse"></i> المخزون</a></li>
+            <li><a href="accounting.html"><i class="fas fa-calculator"></i> المحاسبة</a></li>
+            <li><a href="hr.html"><i class="fas fa-users"></i> الموارد البشرية</a></li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="app">
+          <!-- سيتم تحميل المحتوى الديناميكي هنا -->
+          <div class="welcome-message">
+            <h2>مرحباً بك في نظام إدارة الأعمال المتكامل</h2>
+            <p>اختر قسم من القائمة الجانبية لبدء العمل</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>© 2025 نظام إدارة الأعمال المتكامل. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

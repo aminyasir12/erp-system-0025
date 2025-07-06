@@ -1,0 +1,1230 @@
+/* ==========================================================================
+   ERP System Styles - Unified
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   [1.0] Global Variables & Base Styles
+   -------------------------------------------------------------------------- */
+   :root {
+    --erp-primary-color: #714B67;
+    --erp-primary-color-dark: #583A50;
+    --erp-primary-color-light: rgba(113, 75, 103, 0.1);
+    --erp-secondary-color: #4A5568;
+    --erp-success-color: #38A169;
+    --erp-warning-color: #DD6B20;
+    --erp-danger-color: #E53E3E;
+    --erp-info-color: #3182CE;
+  
+    --erp-body-bg: #F7FAFC;
+    --erp-content-bg: #FFFFFF;
+    --erp-header-bg: var(--erp-content-bg); /* For top app header */
+    --erp-footer-bg: #F8F9FA;
+    --erp-sidebar-bg: #323A46; /* Main sidebar */
+    --erp-sidebar-text-color: #CBD5E0;
+    --erp-sidebar-active-bg: var(--erp-primary-color);
+    --erp-sidebar-hover-bg: #4A5568;
+    --erp-settings-sidebar-bg: #F9FAFB; /* Specific for settings internal sidebar */
+  
+    --erp-text-color: #2D3748;
+    --erp-text-muted-color: #718096;
+    --erp-border-color: #E2E8F0;
+  
+    --erp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --erp-font-size-base: 14px;
+    --erp-border-radius: 4px;
+    --erp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  
+    --erp-header-height: 60px;
+    --erp-main-sidebar-width: 240px;
+    --erp-settings-sidebar-width: 250px;
+    --erp-input-height: 38px;
+  }
+  
+  body {
+    font-family: var(--erp-font-family);
+    background-color: var(--erp-body-bg);
+    color: var(--erp-text-color);
+    margin: 0;
+    font-size: var(--erp-font-size-base);
+    line-height: 1.5;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* --------------------------------------------------------------------------
+     [2.0] Layout Containers (Dashboard / App Container)
+     -------------------------------------------------------------------------- */
+  .dashboard,
+  .app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* For .app-container structure (with top header and footer) */
+  .app-container {
+    flex-direction: column;
+  }
+  
+  /* --------------------------------------------------------------------------
+     [3.0] Main Sidebar (Left/Right Panel)
+     -------------------------------------------------------------------------- */
+  .sidebar { /* This refers to the main application sidebar */
+    width: var(--erp-main-sidebar-width);
+    background-color: var(--erp-sidebar-bg);
+    color: var(--erp-sidebar-text-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.05); /* For RTL */
+    transition: width 0.3s ease;
+  }
+  
+  .sidebar.collapsed {
+      width: 70px;
+  }
+  .sidebar.collapsed .sidebar-header h3,
+  .sidebar.collapsed .sidebar-menu .menu-item span,
+  .sidebar.collapsed .sidebar-menu .menu-item { /* If text is direct child */
+      display: none;
+  }
+  .sidebar.collapsed .sidebar-menu .menu-item i {
+      margin-left: 0;
+      font-size: 1.2em;
+  }
+  .sidebar.collapsed .sidebar-header {
+      justify-content: center;
+  }
+  /* For the index.html structure's sidebar (inside app-main) */
+  .app-main > .sidebar {
+    width: var(--erp-sidebar-width); /* Different variable for this specific sidebar if needed */
+    background-color: var(--erp-content-bg); /* White background for this one */
+    border-left: 1px solid var(--erp-border-color);
+    padding: 20px 0;
+    overflow-y: auto;
+    height: calc(100vh - var(--erp-header-height) - var(--erp-header-height)); /* Approx. footer and header */
+    position: sticky;
+    top: var(--erp-header-height);
+    color: var(--erp-text-color); /* Text color for this sidebar */
+  }
+  
+  
+  .sidebar-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    height: var(--erp-header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .app-main > .sidebar .sidebar-header { /* Override for index.html sidebar header */
+      border-bottom: 1px solid var(--erp-border-color);
+  }
+  
+  
+  .sidebar-header h3 {
+    margin: 0;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #FFF;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .app-main > .sidebar .sidebar-header h3 { /* Override for index.html sidebar header */
+      color: var(--erp-primary-color);
+  }
+  
+  
+  .sidebar-menu {
+    flex-grow: 1;
+    padding-top: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  /* For main sidebar */
+  .sidebar > .sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--erp-sidebar-text-color);
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    border-right: 3px solid transparent; /* For RTL */
+    white-space: nowrap;
+  }
+  .sidebar > .sidebar-menu .menu-item span { /* Assuming span exists for text */
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .sidebar > .sidebar-menu .menu-item i {
+    margin-left: 12px;
+    font-size: 1.05em;
+    width: 18px;
+    text-align: center;
+    opacity: 0.8;
+    transition: opacity 0.15s ease, font-size 0.3s ease, margin-left 0.3s ease;
+  }
+  .sidebar > .sidebar-menu .menu-item:hover {
+    background-color: var(--erp-sidebar-hover-bg);
+    color: #FFF;
+  }
+  .sidebar > .sidebar-menu .menu-item:hover i {
+    opacity: 1;
+  }
+  .sidebar > .sidebar-menu .menu-item.active {
+    background-color: var(--erp-sidebar-active-bg);
+    color: #FFF;
+    font-weight: 500;
+    border-right-color: #FFF;
+  }
+  .sidebar > .sidebar-menu .menu-item.active i {
+    opacity: 1;
+  }
+  .sidebar > .sidebar-menu .menu-item.coming-soon {
+    color: var(--erp-text-muted-color); /* Use a lighter color from sidebar palette */
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .sidebar > .sidebar-menu .menu-item.coming-soon:hover {
+    background-color: transparent;
+    color: var(--erp-text-muted-color);
+  }
+  
+  /* For index.html internal sidebar section menu */
+  .app-main .sidebar-section {
+    padding: 0 15px;
+  }
+  .app-main .sidebar-section:not(:last-child) {
+      margin-bottom: 25px;
+  }
+  .app-main .sidebar-section h3 {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--erp-text-muted-color);
+    text-transform: uppercase;
+    margin: 0 0 10px 0;
+    padding: 0 5px;
+  }
+  .app-main .sidebar-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .app-main .sidebar-section ul li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: var(--erp-text-color);
+    font-size: 0.95em;
+    border-radius: var(--erp-border-radius);
+    transition: background-color 0.15s ease, color 0.15s ease;
+    margin-bottom: 3px;
+  }
+  .app-main .sidebar-section ul li a i {
+    margin-left: 10px;
+    width: 18px;
+    text-align: center;
+    color: var(--erp-text-muted-color);
+    transition: color 0.15s ease;
+  }
+  .app-main .sidebar-section ul li a:hover {
+    background-color: var(--erp-primary-color-light);
+    color: var(--erp-primary-color);
+  }
+  .app-main .sidebar-section ul li a:hover i {
+    color: var(--erp-primary-color);
+  }
+  .app-main .sidebar-section ul li a.active {
+    background-color: var(--erp-primary-color);
+    color: #FFF;
+    font-weight: 500;
+  }
+  .app-main .sidebar-section ul li a.active i {
+    color: #FFF;
+  }
+  .app-main .sidebar-section ul li a.coming-soon {
+    color: var(--erp-text-muted-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .app-main .sidebar-section ul li a.coming-soon:hover {
+    background-color: transparent;
+    color: var(--erp-text-muted-color);
+  }
+  
+  
+  /* --------------------------------------------------------------------------
+     [4.0] Main Content Area & Page Header
+     -------------------------------------------------------------------------- */
+  .main-content { /* Used in .dashboard structure */
+    flex-grow: 1;
+    padding: 20px 25px;
+    overflow-y: auto;
+  }
+  .app-container > .main-content { /* Used in .app-container structure for sales.html */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0; /* Padding will be on .content-wrapper */
+  }
+  .app-container > .app-main { /* Used in index.html structure */
+    flex-grow: 1;
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .page-header { /* Common page header style */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--erp-border-color);
+  }
+  .settings-page > .page-header, /* If .settings-page is a wrapper */
+  .main-content > .page-header { /* Directly inside main-content for settings.html */
+      margin-bottom: 25px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--erp-text-color);
+    margin: 0;
+  }
+  .page-header .actions { /* For reports.html */
+      display: flex;
+      gap: 10px;
+  }
+  
+  /* App Top Header (index.html, sales.html) */
+  .app-header, /* index.html */
+  .main-header /* sales.html */ {
+    height: var(--erp-header-height);
+    background-color: var(--erp-header-bg);
+    border-bottom: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px; /* Standardized padding */
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .app-header .logo {
+    flex-shrink: 0;
+    margin-left: 30px;
+  }
+  .app-header .logo h1 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--erp-primary-color);
+  }
+  .app-header .main-nav { /* For index.html */
+    flex-grow: 1;
+  }
+  .app-header .main-nav ul {
+    list-style: none; padding: 0; margin: 0; display: flex; gap: 5px;
+  }
+  .app-header .main-nav ul li a {
+    display: flex; align-items: center; padding: 0.8rem 1rem;
+    text-decoration: none; color: var(--erp-text-muted-color);
+    font-weight: 500; font-size: 0.95em;
+    border-radius: var(--erp-border-radius);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .app-header .main-nav ul li a i { margin-left: 8px; font-size: 1.05em; }
+  .app-header .main-nav ul li a:hover,
+  .app-header .main-nav ul li a.active {
+    background-color: var(--erp-primary-color-light); color: var(--erp-primary-color);
+  }
+  
+  .main-header .header-actions { /* For sales.html */
+    display: flex; align-items: center; gap: 15px;
+  }
+  .main-header .header-actions h1 {
+    font-size: 1.4em; font-weight: 600; color: var(--erp-text-color); margin: 0;
+  }
+  #sidebarToggle {
+    padding: 0.3rem 0.6rem; color: var(--erp-text-muted-color); font-size: 1.2em;
+    background: none; border: none; cursor: pointer;
+  }
+  #sidebarToggle:hover { color: var(--erp-primary-color); }
+  
+  
+  .user-menu { /* Common for app-header and main-header */
+    position: relative;
+    margin-right: auto; /* Push to right in RTL for index.html */
+  }
+  .main-header .user-menu { margin-right: 0; } /* Reset for sales.html */
+  
+  .user-menu button#userMenuBtn, /* index.html */
+  .user-menu .dropdown .btn-link /* sales.html */ {
+    background: none; border: none; color: var(--erp-text-color);
+    padding: 0.5rem 0.8rem; border-radius: var(--erp-border-radius);
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    font-family: var(--erp-font-family); font-size: 0.9em; font-weight: 500;
+    transition: background-color 0.15s ease;
+  }
+  .user-menu button#userMenuBtn:hover,
+  .user-menu .dropdown .btn-link:hover,
+  .user-menu .dropdown .btn-link:focus {
+    background-color: var(--erp-primary-color-light);
+    box-shadow: none; /* For BS dropdown toggle */
+  }
+  .user-menu button#userMenuBtn i.fa-user-circle,
+  .user-menu .dropdown .btn-link i.fa-user-circle {
+    font-size: 1.4em; /* Standardize */
+    color: var(--erp-primary-color);
+  }
+  .user-menu button#userMenuBtn i.fa-chevron-down,
+  .user-menu .dropdown .dropdown-toggle::after {
+    font-size: 0.8em; color: var(--erp-text-muted-color);
+    transition: transform 0.2s ease;
+    margin-right: 0.3em; margin-left: 0; /* Standardize BS arrow */
+    vertical-align: 0.15em;
+  }
+  .user-menu button#userMenuBtn.open i.fa-chevron-down { transform: rotate(180deg); }
+  
+  .user-menu .dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 5px); left: 0; /* For RTL */
+    background-color: var(--erp-content-bg); border: 1px solid var(--erp-border-color);
+    border-radius: var(--erp-border-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 200px; z-index: 1010; padding: 0.5rem 0;
+    font-size: var(--erp-font-size-base); /* Ensure BS dropdown inherits font size */
+  }
+  .user-menu .dropdown-menu.show { display: block; }
+  
+  .user-menu .dropdown-menu a,
+  .user-menu .dropdown-menu .dropdown-item { /* BS uses .dropdown-item */
+    display: flex; align-items: center; padding: 0.6rem 1rem;
+    text-decoration: none; color: var(--erp-text-color);
+    font-size: 0.9em;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .user-menu .dropdown-menu a i,
+  .user-menu .dropdown-menu .dropdown-item i {
+    margin-left: 10px; /* For RTL */
+    width: 18px; text-align: center;
+    color: var(--erp-text-muted-color);
+    /* me-2 class from BS for margin */
+  }
+  .user-menu .dropdown-menu a:hover,
+  .user-menu .dropdown-menu .dropdown-item:hover,
+  .user-menu .dropdown-menu .dropdown-item:focus {
+    background-color: var(--erp-primary-color-light);
+    color: var(--erp-primary-color);
+  }
+  .user-menu .dropdown-menu a:hover i,
+  .user-menu .dropdown-menu .dropdown-item:hover i {
+      color: var(--erp-primary-color);
+  }
+  .user-menu .dropdown-divider { border-top: 1px solid var(--erp-border-color); }
+  
+  
+  /* Content Wrapper (For sales.html and similar layouts) */
+  .content-wrapper {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    background-color: var(--erp-body-bg);
+  }
+  /* Main Content for index.html */
+  .app-main > .content { /* Used in index.html */
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    background-color: var(--erp-body-bg);
+  }
+  
+  
+  /* --------------------------------------------------------------------------
+     [5.0] Buttons
+     -------------------------------------------------------------------------- */
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: var(--erp-font-size-base);
+    border-radius: var(--erp-border-radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    font-weight: 500;
+    line-height: 1.5;
+    height: var(--erp-input-height);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: capitalize; /* Consistent capitalization */
+  }
+  .btn i { margin-left: 6px; font-size: 0.9em; }
+  
+  .btn-primary {
+    background-color: var(--erp-primary-color); color: #FFF; border-color: var(--erp-primary-color);
+  }
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: var(--erp-primary-color-dark); border-color: var(--erp-primary-color-dark);
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
+  }
+  
+  .btn-secondary { /* Define if not using Bootstrap's default */
+    background-color: var(--erp-secondary-color); color: #FFF; border-color: var(--erp-secondary-color);
+  }
+  .btn-secondary:hover {
+    background-color: #3b4452; border-color: #3b4452;
+  }
+  
+  .btn-outline-secondary {
+    color: var(--erp-secondary-color); border-color: var(--erp-border-color); background-color: transparent;
+  }
+  .btn-outline-secondary:hover {
+    background-color: var(--erp-primary-color-light); color: var(--erp-primary-color-dark);
+    border-color: var(--erp-primary-color-light);
+  }
+  .btn-outline-danger {
+    color: var(--erp-danger-color); border-color: var(--erp-danger-color); background-color: transparent;
+  }
+  .btn-outline-danger:hover {
+    background-color: var(--erp-danger-color); color: #FFF; border-color: var(--erp-danger-color);
+  }
+  
+  .btn-link {
+    color: var(--erp-primary-color); text-decoration: none; background-color: transparent;
+    border: none; padding: 0; font-weight: 500; height: auto; /* Override default height */
+  }
+  .btn-link:hover { color: var(--erp-primary-color-dark); text-decoration: underline; }
+  
+  .btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: calc(var(--erp-font-size-base) - 1px);
+    height: calc(var(--erp-input-height) - 6px);
+  }
+  .table .btn-sm { margin: 0 2px; } /* Spacing for action buttons in table */
+  .table .btn-sm i { margin-left: 0; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [6.0] Cards & General Content Blocks
+     -------------------------------------------------------------------------- */
+  .card,
+  .report-card, /* From reports.html */
+  .report-filters /* From reports.html */ {
+    background-color: var(--erp-content-bg);
+    border-radius: var(--erp-border-radius);
+    border: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow);
+    margin-bottom: 25px;
+  }
+  
+  .card-header,
+  .report-card h5 + div:first-of-type, /* If chart/table is directly after h5 */
+  .report-filters { /* report-filters already styled, here for context */
+    background-color: #F9FAFB;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--erp-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 50px;
+  }
+  .report-card h5 { /* Title within report cards */
+    font-size: 1.1em; font-weight: 600; color: var(--erp-text-color);
+    margin-top: 0; margin-bottom: 15px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--erp-border-color);
+  }
+  .card-header h5 { /* For accounting.html */
+      margin: 0; font-size: 1.05em; font-weight: 600; color: var(--erp-text-color);
+  }
+  
+  
+  .card-body,
+  .report-card > div:not(.chart-container):not(h5), /* Content other than title/chart */
+  .settings-content .tab-pane /* Settings content areas */ {
+    padding: 18px;
+  }
+  .settings-content { padding: 25px; } /* Specific padding for settings main content area */
+  
+  
+  .search-box { /* Common search box */
+    position: relative;
+    width: 220px; /* Default, can be overridden */
+  }
+  .card-header .search-box { width: 250px; margin-left: auto; } /* products.html, purchases.html */
+  .hr-page .card-header .search-box { width: 250px; } /* For hr.html, if card-header is used directly */
+  
+  .search-box .form-control {
+    padding-right: 35px;
+    border-radius: var(--erp-border-radius);
+    font-size: var(--erp-font-size-base);
+    height: calc(var(--erp-input-height) - 4px);
+    border: 1px solid var(--erp-border-color);
+    background-color: var(--erp-content-bg);
+  }
+  .search-box .form-control:focus {
+    border-color: var(--erp-primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+    outline: none;
+  }
+  .search-box i.fa-search {
+    position: absolute; top: 50%; right: 12px; transform: translateY(-50%);
+    color: var(--erp-text-muted-color); font-size: 0.9em;
+    pointer-events: none; /* Allow click on input */
+  }
+  
+  .btn-group { /* Bootstrap .btn-group styling adjustments */
+    display: flex;
+  }
+  .card-header .btn-group { gap: 0; } /* For tight fit in card header */
+  .card-header .btn-group .btn {
+      height: calc(var(--erp-input-height) - 4px); padding: 0.4rem 0.8rem;
+      border-radius: 0;
+  }
+  .card-header .btn-group .btn:first-child {
+      border-top-right-radius: var(--erp-border-radius);
+      border-bottom-right-radius: var(--erp-border-radius);
+  }
+  .card-header .btn-group .btn:last-child {
+      border-top-left-radius: var(--erp-border-radius);
+      border-bottom-left-radius: var(--erp-border-radius);
+  }
+  .card-header .btn-group .dropdown-toggle::after {
+      margin-right: 0.255em; margin-left: 0;
+  }
+  .card-header .btn-group .dropdown-menu {
+      border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+      box-shadow: var(--erp-box-shadow); font-size: var(--erp-font-size-base);
+  }
+  .card-header .btn-group .dropdown-item { padding: 0.5rem 1rem; color: var(--erp-text-color); }
+  .card-header .btn-group .dropdown-item:hover {
+      background-color: var(--erp-primary-color-light); color: var(--erp-primary-color);
+  }
+  .card-header .btn-group .dropdown-divider { border-top: 1px solid var(--erp-border-color); }
+  
+  
+  /* --------------------------------------------------------------------------
+     [7.0] Tables
+     -------------------------------------------------------------------------- */
+  .table-responsive { /* Let it be transparent by default */ }
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: var(--erp-font-size-base);
+    border-collapse: collapse;
+  }
+  .table thead th {
+    background-color: #F9FAFB;
+    color: var(--erp-text-muted-color);
+    font-weight: 500;
+    border-bottom: 2px solid var(--erp-border-color);
+    border-top: 1px solid var(--erp-border-color);
+    padding: 10px 12px;
+    text-align: right;
+    white-space: nowrap;
+    text-transform: capitalize;
+  }
+  .table tbody td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--erp-border-color);
+    color: var(--erp-text-color);
+  }
+  .table tbody tr:last-child td {
+      border-bottom: none; /* Clean look if it's the last item */
+  }
+  .table-hover tbody tr:hover {
+    background-color: var(--erp-primary-color-light);
+  }
+  
+  .table img.rounded, /* products.html */
+  .table .employee-avatar, /* hr.html */
+  .table .product-image /* inventory.html */ {
+    width: 36px; /* Standardized image size in tables */
+    height: 36px;
+    border-radius: var(--erp-border-radius); /* Or 50% for circle */
+    border: 1px solid var(--erp-border-color);
+    object-fit: cover;
+    margin-left: 10px; /* Common margin for RTL */
+  }
+  .table .employee-avatar { border-radius: 50%; } /* Specific for employee avatars */
+  
+  
+  .table .text-success { color: var(--erp-success-color) !important; font-weight: 500; }
+  .table .text-danger { color: var(--erp-danger-color) !important; font-weight: 500; }
+  
+  /* Stock level indicators (inventory.html) */
+  .table .high-stock { color: var(--erp-success-color); font-weight: 500; }
+  .table .medium-stock { color: var(--erp-warning-color); font-weight: 500; }
+  .table .low-stock { color: var(--erp-danger-color); font-weight: 500; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [8.0] Badges & Status Indicators
+     -------------------------------------------------------------------------- */
+  .badge, /* General badge */
+  .status-badge, /* purchases.html, hr.html */
+  .department-badge /* hr.html */ {
+    padding: 0.35em 0.7em; /* Standardized padding */
+    font-size: 0.8em;
+    font-weight: 500;
+    border-radius: var(--erp-border-radius);
+    line-height: 1.2; /* Adjusted for better vertical alignment */
+    text-transform: capitalize;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  
+  /* For Bootstrap 5 badges like .badge.bg-success */
+  .bg-success, .badge-success, .status-badge.status-completed, .status-badge.status-active {
+    background-color: rgba(56, 161, 105, 0.1) !important;
+    color: var(--erp-success-color) !important;
+  }
+  .bg-warning, .status-badge.status-pending, .status-badge.status-on-leave { /* 'pending' could be warning */
+    background-color: rgba(221, 107, 32, 0.1) !important;
+    color: var(--erp-warning-color) !important;
+  }
+  .bg-danger, .status-badge.status-out-of-stock /* Example */ {
+    background-color: rgba(229, 62, 62, 0.1) !important;
+    color: var(--erp-danger-color) !important;
+  }
+  .department-badge {
+    background-color: #EDF2F7;
+    color: #4A5568;
+  }
+  
+  
+  /* --------------------------------------------------------------------------
+     [9.0] Forms & Modals
+     -------------------------------------------------------------------------- */
+  .form-label {
+    font-weight: 500; margin-bottom: 0.35rem; font-size: var(--erp-font-size-base);
+    color: var(--erp-text-color); display: block;
+  }
+  .settings-content .form-label { margin-bottom: 0.4rem; } /* Slightly more for settings */
+  
+  .form-control, .form-select {
+    border: 1px solid var(--erp-border-color); border-radius: var(--erp-border-radius);
+    padding: 0.45rem 0.75rem; font-size: var(--erp-font-size-base);
+    height: var(--erp-input-height); width: 100%;
+    background-color: var(--erp-content-bg);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: var(--erp-primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+    outline: none; background-color: var(--erp-content-bg);
+  }
+  .form-control[readonly] { background-color: var(--erp-body-bg); opacity: 0.8; }
+  .form-control[type="file"] { padding: 0.3rem 0.75rem; }
+  textarea.form-control { height: auto; min-height: calc(var(--erp-input-height) * 2); }
+  
+  .input-group-text {
+    background-color: #F9FAFB; border: 1px solid var(--erp-border-color);
+    border-radius: var(--erp-border-radius); color: var(--erp-text-muted-color);
+    font-size: var(--erp-font-size-base); padding: 0.45rem 0.75rem;
+    height: var(--erp-input-height);
+  }
+  .input-group .btn { /* Buttons inside input group, e.g., purchases.html modal */
+      border-radius: var(--erp-border-radius);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+  .input-group > .form-select, .input-group > .form-control {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+  }
+  
+  
+  .form-check { padding-right: 1.75em; /* For RTL switch alignment */ }
+  .form-check .form-check-input { float: right; margin-right: -1.75em; }
+  .form-switch .form-check-input {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+  }
+  .form-switch .form-check-input:checked {
+      background-color: var(--erp-primary-color); border-color: var(--erp-primary-color);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  }
+  .form-switch .form-check-input:focus {
+      border-color: var(--erp-primary-color-light);
+      box-shadow: 0 0 0 0.25rem rgba(113, 75, 103, 0.25);
+  }
+  
+  .text-danger { color: var(--erp-danger-color) !important; }
+  
+  /* Modal Styles */
+  .modal.fade .modal-dialog { transition: transform .3s ease-out; }
+  .modal-content {
+    border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .modal-header {
+    background-color: #F9FAFB; border-bottom: 1px solid var(--erp-border-color);
+    padding: 12px 18px;
+  }
+  .modal-title { font-size: 1.15em; font-weight: 600; color: var(--erp-text-color); }
+  .btn-close { background-size: 0.7em; filter: grayscale(1) opacity(0.7); }
+  .btn-close:hover { filter: grayscale(0) opacity(1); }
+  .btn-close:focus { box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25); }
+  
+  .modal-body { padding: 18px 25px; }
+  .modal-body .row { margin-bottom: 0 !important; } /* Reset BS row margin if needed */
+  .modal-body .mb-3, .modal-body .mb-4 { margin-bottom: 1rem !important; }
+  .modal-body .p-3.bg-light.rounded { /* Totals box in purchases.html modal */
+      background-color: #F9FAFB !important;
+      border: 1px solid var(--erp-border-color);
+  }
+  .modal-body .d-grid { margin-top: 1rem; } /* Stacked buttons in modal */
+  
+  .modal-footer { /* products.html */
+    background-color: #F9FAFB; border-top: 1px solid var(--erp-border-color);
+    padding: 12px 18px; display: flex; justify-content: flex-start; /* RTL */
+  }
+  .modal-footer .btn { margin-left: 8px; }
+  .modal-footer .btn:last-child { margin-left: 0; }
+  
+  /* Purchase Items Table in Modal */
+  #purchaseItemsTable thead th { font-size: 0.9em; padding: 8px 10px; }
+  #purchaseItemsTable tbody td { padding: 8px 10px; vertical-align: middle; }
+  #purchaseItemsTable .form-control-sm {
+      height: calc(var(--erp-input-height) - 8px); padding: 0.25rem 0.5rem;
+      font-size: var(--erp-font-size-base);
+  }
+  #purchaseItemsTable .input-group-sm .input-group-text {
+      padding: 0.25rem 0.5rem; height: calc(var(--erp-input-height) - 8px);
+  }
+  #purchaseItemsTable .remove-item i { margin-left: 0; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [10.0] Specific Page Sections
+     -------------------------------------------------------------------------- */
+  
+  /* Stats Cards (General, then specific) */
+  .stats-cards { /* dashboard.html, hr.html */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  .stats-cards .stat-card { /* Common stat card styling */
+    background-color: var(--erp-content-bg); padding: 18px;
+    border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .stats-cards .stat-card:hover { border-color: var(--erp-primary-color); transform: translateY(-3px); }
+  
+  /* dashboard.html specific stat card */
+  .dashboard-page .stats-cards .stat-card p { /* If .dashboard-page is wrapper */
+    font-size: 0.9em; color: var(--erp-text-muted-color); margin-top: 0;
+    margin-bottom: 8px; font-weight: 500;
+  }
+  .dashboard-page .stats-cards .stat-card h3 {
+    font-size: 1.8em; font-weight: 600; color: var(--erp-text-color);
+    margin-top: 0; margin-bottom: 5px; line-height: 1.2;
+  }
+  .dashboard-page .stats-cards .stat-card span.text-success,
+  .dashboard-page .stats-cards .stat-card span.text-danger {
+    font-size: 0.85em; font-weight: 500; display: block;
+  }
+  
+  /* hr.html specific stat card */
+  .hr-page .stats-cards .stat-card { /* If .hr-page is wrapper */
+    box-shadow: none; padding: 15px;
+  }
+  .hr-page .stats-cards .stat-card .value {
+    font-size: 1.8em; font-weight: 600; margin-bottom: 2px; line-height: 1.2;
+  }
+  .hr-page .stats-cards .stat-card.primary .value { color: var(--erp-primary-color); }
+  .hr-page .stats-cards .stat-card.success .value { color: var(--erp-success-color); }
+  .hr-page .stats-cards .stat-card.warning .value { color: var(--erp-warning-color); }
+  .hr-page .stats-cards .stat-card.danger .value { color: var(--erp-danger-color); }
+  .hr-page .stats-cards .stat-card .label {
+    font-size: 0.9em; color: var(--erp-text-color); margin-bottom: 4px; font-weight: 500;
+  }
+  .hr-page .stats-cards .stat-card .text-muted.small {
+    font-size: 0.8em; color: var(--erp-text-muted-color);
+  }
+  
+  /* inventory.html specific stat card */
+  .inventory-page .inventory-stats .stat-card { /* If .inventory-page is wrapper */
+    display: flex; align-items: center; gap: 15px; padding: 18px;
+  }
+  .inventory-page .inventory-stats .stat-card .icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .inventory-page .inventory-stats .stat-card .icon i { font-size: 1.5em; }
+  .inventory-page .inventory-stats .stat-card:nth-child(1) .icon { background-color: rgba(25,118,210,0.1); color: #1976d2;}
+  .inventory-page .inventory-stats .stat-card:nth-child(2) .icon { background-color: rgba(56,142,60,0.1); color: #388e3c;}
+  .inventory-page .inventory-stats .stat-card:nth-child(3) .icon { background-color: rgba(245,124,0,0.1); color: #f57c00;}
+  .inventory-page .inventory-stats .stat-card:nth-child(4) .icon { background-color: rgba(211,47,47,0.1); color: #d32f2f;}
+  .inventory-page .inventory-stats .stat-card .value {
+    font-size: 1.6em; font-weight: 600; color: var(--erp-text-color); margin-bottom: 2px; line-height: 1.1;
+  }
+  .inventory-page .inventory-stats .stat-card .label {
+    font-size: 0.85em; color: var(--erp-text-muted-color); font-weight: 500;
+  }
+  
+  
+  /* Financial Summary (accounting.html) */
+  .financial-summary {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px; margin-bottom: 25px;
+  }
+  .financial-summary .summary-card {
+    background-color: var(--erp-content-bg); padding: 20px;
+    border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow); text-align: right;
+  }
+  .financial-summary .summary-card h3 {
+    font-size: 0.95em; color: var(--erp-text-muted-color); margin-top: 0;
+    margin-bottom: 8px; font-weight: 500; text-transform: uppercase;
+  }
+  .financial-summary .summary-card .amount {
+    font-size: 1.7em; font-weight: 600; margin-bottom: 5px; line-height: 1.2;
+  }
+  .financial-summary .summary-card.income .amount { color: var(--erp-success-color); }
+  .financial-summary .summary-card.expense .amount { color: var(--erp-danger-color); }
+  .financial-summary .summary-card.balance .amount { color: var(--erp-primary-color); }
+  .financial-summary .summary-card small { font-size: 0.8em; color: var(--erp-text-muted-color); }
+  
+  
+  /* Recent Activity (dashboard.html) */
+  .recent-activity {
+    background-color: var(--erp-content-bg); padding: 20px 25px;
+    border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow);
+  }
+  .recent-activity h2 {
+    font-size: 1.2em; font-weight: 600; color: var(--erp-text-color);
+    margin-top: 0; margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--erp-border-color);
+  }
+  .activity-list { display: flex; flex-direction: column; gap: 18px; }
+  .activity-item { display: flex; align-items: flex-start; gap: 15px; }
+  .activity-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background-color: var(--erp-primary-color-light); color: var(--erp-primary-color);
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .activity-icon i { font-size: 0.95em; }
+  .activity-item:nth-child(2n) .activity-icon {
+      background-color: rgba(56,161,105,0.1); color: var(--erp-success-color);
+  }
+  .activity-item:nth-child(3n) .activity-icon {
+      background-color: rgba(49,130,206,0.1); color: var(--erp-info-color);
+  }
+  .activity-details { flex-grow: 1; }
+  .activity-details p { margin: 0 0 4px 0; font-size: 0.95em; color: var(--erp-text-color); line-height: 1.4; }
+  .activity-details .activity-time { font-size: 0.8em; color: var(--erp-text-muted-color); }
+  
+  
+  /* Report Filters (reports.html) */
+  .report-filters { padding: 18px; } /* Already defined as .report-card common style */
+  .report-filters .form-label {
+    font-weight: 500; margin-bottom: 0.35rem;
+    font-size: calc(var(--erp-font-size-base) - 1px);
+    color: var(--erp-text-muted-color); display: block;
+  }
+  .report-filters .form-select, .report-filters .form-control {
+    height: var(--erp-input-height); /* Already defined */
+  }
+  .report-filters .row.g-3 { /* BS g-3 class */
+      display: flex; --bs-gutter-x: 1rem; --bs-gutter-y: 1rem;
+      flex-direction: row; justify-content: space-around; align-items: center;
+  }
+  .report-filters .d-flex.align-items-end { align-self: flex-end !important; }
+  
+  .chart-container { position: relative; height: 300px; width: 100%; }
+  .chart-container canvas { max-width: 100%; max-height: 100%; }
+  
+  
+  /* Settings Page Specific Layout (settings.html) */
+  .settings-container {
+    display: flex; gap: 25px; background-color: var(--erp-content-bg);
+    border: 1px solid var(--erp-border-color); border-radius: var(--erp-border-radius);
+    box-shadow: var(--erp-box-shadow); padding: 0;
+  }
+  .settings-sidebar { /* Internal sidebar for settings */
+    width: var(--erp-settings-sidebar-width); flex-shrink: 0;
+    background-color: var(--erp-settings-sidebar-bg);
+    border-left: 1px solid var(--erp-border-color);
+    padding: 20px 0;
+    border-top-right-radius: var(--erp-border-radius);
+    border-bottom-right-radius: var(--erp-border-radius);
+  }
+  .settings-sidebar .nav-pills .nav-link {
+    color: var(--erp-text-color); padding: 12px 20px; border-radius: 0;
+    font-size: 0.95em; font-weight: 500; display: flex; align-items: center;
+    border-right: 3px solid transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, border-right-color 0.15s ease;
+  }
+  .settings-sidebar .nav-pills .nav-link i {
+    margin-left: 12px; width: 18px; text-align: center;
+    color: var(--erp-text-muted-color); transition: color 0.15s ease;
+  }
+  .settings-sidebar .nav-pills .nav-link:hover {
+    background-color: var(--erp-primary-color-light); color: var(--erp-primary-color);
+    border-right-color: var(--erp-primary-color-light);
+  }
+  .settings-sidebar .nav-pills .nav-link:hover i { color: var(--erp-primary-color); }
+  .settings-sidebar .nav-pills .nav-link.active {
+    background-color: var(--erp-primary-color); color: #FFF;
+    border-right-color: #FFF; font-weight: 500;
+  }
+  .settings-sidebar .nav-pills .nav-link.active i { color: #FFF; }
+  
+  .settings-content .tab-pane h4 {
+    font-size: 1.3em; font-weight: 600; color: var(--erp-text-color);
+    padding-bottom: 10px; border-bottom: 1px solid var(--erp-border-color);
+    /* Uses Bootstrap .mb-4 */
+  }
+  .settings-content form button[type="submit"],
+  .settings-content #backup button { margin-top: 1rem; }
+  #backup .btn { margin-top: 0; }
+  #backup .btn.me-2 { margin-left: 0.5rem !important; margin-right: 0 !important; }
+  
+  
+  /* Coming Soon Page (sales.html) */
+  .coming-soon-page {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    min-height: calc(100vh - var(--erp-header-height) - 50px); /* Adjust 50px for padding */
+    padding: 20px; background-color: var(--erp-content-bg);
+    border-radius: var(--erp-border-radius); border: 1px solid var(--erp-border-color);
+    box-shadow: var(--erp-box-shadow);
+  }
+  .coming-soon-page .fa-tools {
+    font-size: 4em; color: var(--erp-primary-color); margin-bottom: 25px;
+    animation: spinTools 5s linear infinite;
+  }
+  @keyframes spinTools {
+    0% { transform: rotate(0deg); } 25% { transform: rotate(15deg); }
+    50% { transform: rotate(0deg); } 75% { transform: rotate(-15deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .coming-soon-page h1 {
+    font-size: 2.5em; font-weight: 600; color: var(--erp-text-color); margin-bottom: 15px;
+  }
+  .coming-soon-page p {
+    font-size: 1.1em; color: var(--erp-text-muted-color);
+    max-width: 550px; margin-bottom: 30px; line-height: 1.7;
+  }
+  .coming-soon-page .btn-back { padding: 0.7rem 1.5rem; font-size: 1em; }
+  
+  /* Welcome Message (index.html) */
+  .welcome-message {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px; background-color: var(--erp-content-bg);
+    border-radius: var(--erp-border-radius); border: 1px dashed var(--erp-border-color);
+    min-height: 300px;
+  }
+  .welcome-message h2 {
+    font-size: 1.8em; font-weight: 600; color: var(--erp-text-color); margin-bottom: 15px;
+  }
+  .welcome-message p { font-size: 1.1em; color: var(--erp-text-muted-color); max-width: 500px; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [11.0] Tabs, Pagination & Alerts
+     -------------------------------------------------------------------------- */
+  .nav-tabs { /* hr.html, inventory.html */
+    border-bottom: 1px solid var(--erp-border-color); margin-bottom: -1px;
+  }
+  .nav-tabs .nav-item { margin-left: 0; }
+  .nav-tabs .nav-link {
+    color: var(--erp-text-muted-color); font-weight: 500; padding: 10px 15px;
+    border: 1px solid transparent; border-bottom: none;
+    border-top-left-radius: var(--erp-border-radius);
+    border-top-right-radius: var(--erp-border-radius);
+    margin-right: 2px; font-size: var(--erp-font-size-base);
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .nav-tabs .nav-link:hover { color: var(--erp-text-color); background-color: var(--erp-body-bg); }
+  .nav-tabs .nav-link.active {
+    color: var(--erp-primary-color); background-color: var(--erp-content-bg);
+    border-color: var(--erp-border-color); border-bottom-color: var(--erp-content-bg);
+    font-weight: 600; position: relative; z-index: 1;
+  }
+  .nav-tabs .nav-link i { margin-left: 5px; font-size: 0.9em; }
+  
+  
+  .pagination { /* products.html, purchases.html */
+    margin-top: 1rem; gap: 5px; justify-content: flex-end; /* BS class */
+  }
+  .page-item .page-link {
+    color: var(--erp-primary-color); border: 1px solid var(--erp-border-color);
+    border-radius: var(--erp-border-radius); padding: 0.4rem 0.75rem;
+    font-size: var(--erp-font-size-base); min-width: 34px; text-align: center;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .page-item .page-link:hover {
+    background-color: var(--erp-primary-color-light);
+    border-color: var(--erp-primary-color-light); color: var(--erp-primary-color-dark);
+  }
+  .page-item.active .page-link {
+    background-color: var(--erp-primary-color); border-color: var(--erp-primary-color);
+    color: #FFF; z-index: 3;
+  }
+  .page-item.disabled .page-link {
+    color: var(--erp-text-muted-color); background-color: var(--erp-body-bg);
+    border-color: var(--erp-border-color); pointer-events: none;
+  }
+  
+  .alert {
+    border-radius: var(--erp-border-radius); padding: 12px 15px;
+    font-size: var(--erp-font-size-base); border: 1px solid;
+    display: flex; align-items: center;
+  }
+  .alert i { margin-left: 8px; font-size: 1.1em; }
+  .alert-info { background-color: #EBF8FF; border-color: #90CDF4; color: #2C5282; }
+  .alert-info i { color: var(--erp-info-color); }
+  .alert-warning { background-color: #FFFBEB; border-color: #FBD38D; color: #975A16; }
+  .alert-warning i { color: var(--erp-warning-color); }
+  .alert-success { background-color: #F0FFF4; border-color: #9AE6B4; color: #276749; }
+  .alert-success i { color: var(--erp-success-color); }
+  .alert-danger { background-color: #FFF5F5; border-color: #FEB2B2; color: #9B2C2C; }
+  .alert-danger i { color: var(--erp-danger-color); }
+  
+  
+  /* --------------------------------------------------------------------------
+     [12.0] Footer (index.html)
+     -------------------------------------------------------------------------- */
+  .app-footer {
+    height: var(--erp-header-height);
+    background-color: var(--erp-footer-bg); color: var(--erp-text-muted-color);
+    border-top: 1px solid var(--erp-border-color); display: flex;
+    align-items: center; justify-content: center; padding: 0 25px;
+    font-size: 0.85em; flex-shrink: 0;
+  }
+  .app-footer p { margin: 0; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [13.0] Plugin Specific Styles (DataTables, Select2, Flatpickr)
+     -------------------------------------------------------------------------- */
+  .dataTables_wrapper .dataTables_length select,
+  .dataTables_wrapper .dataTables_filter input {
+    height: calc(var(--erp-input-height) - 4px) !important;
+    border-radius: var(--erp-border-radius) !important;
+    border: 1px solid var(--erp-border-color) !important;
+    padding: 0.35rem 0.6rem !important; margin: 0 5px;
+    background-color: var(--erp-content-bg) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate { margin-top: 1rem !important; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.4rem 0.75rem !important; margin: 0 2px !important;
+    border-radius: var(--erp-border-radius) !important;
+    border: 1px solid var(--erp-border-color) !important;
+    color: var(--erp-primary-color) !important; min-width: 34px !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: var(--erp-primary-color-light) !important;
+    border-color: var(--erp-primary-color-light) !important;
+    color: var(--erp-primary-color-dark) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--erp-primary-color) !important;
+    color: white !important;
+    border: 1px solid var(--erp-primary-color) !important;
+  }
+  .dataTables_wrapper .dataTables_info,
+  .dataTables_wrapper .dataTables_length label,
+  .dataTables_wrapper .dataTables_filter label {
+      color: var(--erp-text-muted-color) !important;
+      font-size: 0.9em;
+  }
+  
+  .select2-container--bootstrap-5 .select2-selection {
+      height: var(--erp-input-height) !important;
+      border-radius: var(--erp-border-radius) !important;
+      border: 1px solid var(--erp-border-color) !important;
+      padding: 0.35rem .75rem !important; /* Adjusted to better match input padding */
+      font-size: var(--erp-font-size-base) !important;
+      display: flex; /* Align select2 text vertically */
+      align-items: center;
+  }
+  .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+  .select2-container--bootstrap-5.select2-container--open .select2-selection {
+      border-color: var(--erp-primary-color) !important;
+      box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15) !important;
+  }
+  .select2-dropdown {
+      border-radius: var(--erp-border-radius) !important;
+      border: 1px solid var(--erp-border-color) !important;
+      box-shadow: var(--erp-box-shadow) !important;
+  }
+  .select2-container--bootstrap-5 .select2-selection__rendered {
+      line-height: normal !important; /* Fix vertical alignment issue */
+  }
+  
+  .flatpickr-input { cursor: pointer; }
+  .flatpickr-calendar {
+      background: var(--erp-content-bg); border: 1px solid var(--erp-border-color);
+      border-radius: var(--erp-border-radius); box-shadow: var(--erp-box-shadow);
+      font-family: var(--erp-font-family); width: auto !important;
+  }
+  .flatpickr-months .flatpickr-month { color: var(--erp-text-color); fill: var(--erp-text-color); }
+  .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+      color: var(--erp-primary-color); fill: var(--erp-primary-color);
+  }
+  .flatpickr-weekday { color: var(--erp-text-muted-color); font-weight: 500; }
+  .flatpickr-day { color: var(--erp-text-color); }
+  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange,
+  .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange,
+  .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus,
+  .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover,
+  .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay,
+  .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+      background: var(--erp-primary-color); border-color: var(--erp-primary-color); color: #FFF;
+  }
+  .flatpickr-day.today { border-color: var(--erp-primary-color); }
+  .flatpickr-day.today:hover {
+      background: var(--erp-primary-color-light); color: var(--erp-primary-color);
+      border-color: var(--erp-primary-color);
+  }
+  .flatpickr-day:hover { background: var(--erp-body-bg); }
+  
+  
+  /* --------------------------------------------------------------------------
+     [14.0] Utilities & Helpers
+     -------------------------------------------------------------------------- */
+  small.text-muted { color: var(--erp-text-muted-color) !important; font-size: 0.85em; }
+  .text-muted.d-block { display: block !important; } /* For inventory.html */
+  .fw-medium { font-weight: 500 !important; } /* Common Bootstrap utility */
+  
+  /* For RTL specific Bootstrap classes if not handled by BS RTL itself */
+  .me-2 { margin-left: 0.5rem !important; margin-right: 0 !important; } /* Example if BS RTL not active */
+  .ms-2 { margin-right: 0.5rem !important; margin-left: 0 !important; }
+  
+  
+  /* --------------------------------------------------------------------------
+     [15.0] Scrollbar
+     -------------------------------------------------------------------------- */
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-track { background: var(--erp-body-bg); }
+  .sidebar::-webkit-scrollbar-track,
+  .app-main > .sidebar::-webkit-scrollbar-track, /* For index.html internal sidebar */
+  .content-wrapper::-webkit-scrollbar-track,
+  .app-main > .content::-webkit-scrollbar-track, /* For index.html main content */
+  .settings-sidebar::-webkit-scrollbar-track,
+  .settings-content::-webkit-scrollbar-track {
+      background: #ebeef2;
+  }
+  ::-webkit-scrollbar-thumb { background: #BCC1C8; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #A0A6AD; }
+  
+  /* --------------------------------------------------------------------------
+     [16.0] Placeholder
+     -------------------------------------------------------------------------- */
+  ::placeholder { color: #A0AEC0; opacity: 1; }

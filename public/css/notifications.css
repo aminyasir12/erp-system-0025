@@ -1,0 +1,87 @@
+/* Estilos para las notificaciones del sistema */
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  font-weight: 500;
+  z-index: 9999;
+  transform: translateX(120%);
+  transition: transform 0.3s ease-in-out;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification i {
+  margin-left: 10px;
+  font-size: 1.2rem;
+}
+
+.notification-success {
+  background-color: #38A169;
+  border-left: 5px solid #2F855A;
+}
+
+.notification-error {
+  background-color: #E53E3E;
+  border-left: 5px solid #C53030;
+}
+
+.notification-warning {
+  background-color: #DD6B20;
+  border-left: 5px solid #C05621;
+}
+
+.notification-info {
+  background-color: #3182CE;
+  border-left: 5px solid #2B6CB0;
+}
+
+/* Estilos para los mensajes de error en formularios */
+.error-message {
+  color: #E53E3E;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.form-control.error {
+  border-color: #E53E3E;
+}
+
+/* Animaciones para las notificaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-in-out;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}

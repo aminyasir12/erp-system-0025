@@ -1,0 +1,38 @@
+# ملفات النظام
+.DS_Store
+Thumbs.db
+
+# ملفات البيئة
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ملفات التبعيات
+/node_modules
+/.pnp
+.pnp.js
+
+# ملفات التصريف
+/dist
+/build
+
+# ملفات السجلات
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ملفات IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ملفات نظام التشغيل
+*.log
+*.sqlite
+*.sqlite3

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الأزرار</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/modal-styles.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-info { background-color: #d1ecf1; }
+        .log-success { background-color: #d4edda; }
+        .log-error { background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>اختبار أزرار إضافة المنتج</h2>
+        
+        <div>
+            <button type="button" id="quickAddProductBtn" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-plus"></i> إضافة منتج سريع
+            </button>
+            <button type="button" id="fullAddProductBtn" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-plus-circle"></i> إضافة منتج كامل
+            </button>
+        </div>
+        
+        <div id="quickAddProductContainer" style="display: none;">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="fas fa-plus"></i> إضافة منتج جديد</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">اسم المنتج الجديد <span class="text-danger">*</span></label>
+                        <input type="text" id="quickProductName" class="form-control" placeholder="أدخل اسم المنتج الجديد">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">الفئة</label>
+                            <select id="quickProductCategory" class="form-select">
+                                <option value="عام">عام</option>
+                                <option value="إلكترونيات">إلكترونيات</option>
+                                <option value="ملحقات">ملحقات</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">الحد الأدنى للمخزون</label>
+                            <input type="number" id="quickProductMinStock" class="form-control" value="5" min="0">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="button" id="confirmQuickAddBtn" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i> تأكيد الإضافة
+                        </button>
+                        <button type="button" id="cancelQuickAddBtn" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="log">
+            <h5>سجل الأحداث:</h5>
+            <div id="logOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        function addLog(message, type = 'info') {
+            const logOutput = document.getElementById('logOutput');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `<strong>${new Date().toLocaleTimeString()}:</strong> ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('تم تحميل الصفحة', 'success');
+            
+            // زر إضافة منتج سريع
+            const quickAddBtn = document.getElementById('quickAddProductBtn');
+            if (quickAddBtn) {
+                addLog('تم العثور على زر إضافة منتج سريع', 'info');
+                quickAddBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addLog('تم النقر على زر إضافة منتج سريع', 'success');
+                    
+                    // إخفاء الأزرار
+                    document.getElementById('quickAddProductBtn').style.display = 'none';
+                    document.getElementById('fullAddProductBtn').style.display = 'none';
+                    
+                    // إظهار نموذج الإضافة السريعة
+                    const container = document.getElementById('quickAddProductContainer');
+                    if (container) {
+                        container.style.display = 'block';
+                        addLog('تم إظهار نموذج الإضافة السريعة', 'success');
+                        
+                        // التركيز على حقل اسم المنتج
+                        const nameInput = document.getElementById('quickProductName');
+                        if (nameInput) {
+                            nameInput.focus();
+                        }
+                    }
+                });
+            } else {
+                addLog('لم يتم العثور على زر إضافة منتج سريع', 'error');
+            }
+            
+            // زر إضافة منتج كامل
+            const fullAddBtn = document.getElementById('fullAddProductBtn');
+            if (fullAddBtn) {
+                addLog('تم العثور على زر إضافة منتج كامل', 'info');
+                fullAddBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addLog('تم النقر على زر إضافة منتج كامل', 'success');
+                    addLog('سيتم فتح نافذة إضافة منتج كامل', 'info');
+                });
+            } else {
+                addLog('لم يتم العثور على زر إضافة منتج كامل', 'error');
+            }
+            
+            // زر تأكيد الإضافة السريعة
+            const confirmQuickAddBtn = document.getElementById('confirmQuickAddBtn');
+            if (confirmQuickAddBtn) {
+                confirmQuickAddBtn.addEventListener('click', function() {
+                    addLog('تم النقر على زر تأكيد الإضافة السريعة', 'success');
+                    
+                    const productName = document.getElementById('quickProductName').value.trim();
+                    if (!productName) {
+                        addLog('يرجى إدخال اسم المنتج', 'error');
+                        return;
+                    }
+                    
+                    addLog(`تم إضافة منتج جديد: ${productName}`, 'success');
+                    
+                    // إخفاء النموذج
+                    document.getElementById('quickAddProductContainer').style.display = 'none';
+                    document.getElementById('quickAddProductBtn').style.display = 'inline-block';
+                    document.getElementById('fullAddProductBtn').style.display = 'inline-block';
+                    
+                    // مسح الحقول
+                    document.getElementById('quickProductName').value = '';
+                });
+            }
+            
+            // زر إلغاء الإضافة السريعة
+            const cancelQuickAddBtn = document.getElementById('cancelQuickAddBtn');
+            if (cancelQuickAddBtn) {
+                cancelQuickAddBtn.addEventListener('click', function() {
+                    addLog('تم النقر على زر إلغاء الإضافة السريعة', 'info');
+                    
+                    // إظهار الأزرار
+                    document.getElementById('quickAddProductBtn').style.display = 'inline-block';
+                    document.getElementById('fullAddProductBtn').style.display = 'inline-block';
+                    
+                    // إخفاء نموذج الإضافة السريعة
+                    document.getElementById('quickAddProductContainer').style.display = 'none';
+                    
+                    // مسح الحقول
+                    document.getElementById('quickProductName').value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

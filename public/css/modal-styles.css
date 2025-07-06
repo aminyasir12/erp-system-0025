@@ -1,0 +1,538 @@
+/* ==========================================================================
+   ERP System Modal Styles - Responsive & Unified
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   [1.0] Modal Base Styles
+   -------------------------------------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 1.75rem auto;
+  max-width: 500px;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+  outline: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom-right-radius: calc(0.3rem - 1px);
+  border-bottom-left-radius: calc(0.3rem - 1px);
+}
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em 0.25em;
+  color: #000;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  color: #000;
+  text-decoration: none;
+  opacity: 0.75;
+}
+
+/* أنماط الأزرار */
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #157347;
+  border-color: #146c43;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-outline-success {
+  color: #198754;
+  border-color: #198754;
+}
+
+.btn-outline-success:hover {
+  color: #fff;
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+/* أنماط النماذج */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  appearance: none;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* أنماط البطاقات */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.card-header {
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+/* أنماط الشبكة */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+}
+
+.col-md-6 {
+  flex: 0 0 auto;
+  width: 50%;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.col-md-3 {
+  flex: 0 0 auto;
+  width: 25%;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+/* أنماط النص */
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-white {
+  color: #fff !important;
+}
+
+.bg-success {
+  background-color: #198754 !important;
+}
+
+.border-success {
+  border-color: #198754 !important;
+}
+
+/* أنماط إضافية */
+.d-none {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
+/* --------------------------------------------------------------------------
+   [2.0] Modal Header
+   -------------------------------------------------------------------------- */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background-color: #F9FAFB;
+  border-bottom: 1px solid var(--erp-border-color);
+  border-top-right-radius: calc(var(--erp-border-radius) - 1px);
+  border-top-left-radius: calc(var(--erp-border-radius) - 1px);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  line-height: 1.5;
+}
+
+.close, .btn-close {
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem -0.5rem auto;
+  background: none;
+  border: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--erp-text-muted-color);
+  transition: color 0.15s ease;
+}
+
+.close:hover, .btn-close:hover {
+  color: var(--erp-text-color);
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   [3.0] Modal Body
+   -------------------------------------------------------------------------- */
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 18px 25px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px); /* Prevent modal from being too tall */
+}
+
+/* Responsive adjustments for modal body */
+@media (max-width: 768px) {
+  .modal-body {
+    padding: 15px 20px;
+    max-height: calc(100vh - 150px);
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-body {
+    padding: 12px 15px;
+  }
+}
+
+/* Form rows in modal body */
+.modal-body .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.modal-body .form-group {
+  flex: 1 1 200px; /* Allow wrapping on smaller screens */
+  min-width: 0; /* Prevent overflow issues */
+}
+
+/* Ensure inputs don't overflow on small screens */
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Responsive tables in modals */
+.modal-body .table-responsive {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   [4.0] Modal Footer
+   -------------------------------------------------------------------------- */
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start; /* RTL alignment */
+  padding: 12px 18px;
+  background-color: #F9FAFB;
+  border-top: 1px solid var(--erp-border-color);
+  border-bottom-right-radius: calc(var(--erp-border-radius) - 1px);
+  border-bottom-left-radius: calc(var(--erp-border-radius) - 1px);
+}
+
+.modal-footer .btn {
+  margin-left: 8px;
+}
+
+.modal-footer .btn:last-child {
+  margin-left: 0;
+}
+
+/* Responsive adjustments for footer */
+@media (max-width: 576px) {
+  .modal-footer {
+    padding: 10px 15px;
+    justify-content: center; /* Center buttons on very small screens */
+  }
+  
+  .modal-footer .btn {
+    margin: 5px;
+    flex-grow: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   [5.0] Modal Sizes
+   -------------------------------------------------------------------------- */
+/* Small modal */
+.modal-sm .modal-dialog {
+  max-width: 400px;
+}
+
+/* Large modal */
+.modal-lg .modal-dialog {
+  max-width: 900px;
+}
+
+/* Extra large modal */
+.modal-xl .modal-dialog {
+  max-width: 1140px;
+}
+
+/* Responsive adjustments for modal sizes */
+@media (max-width: 992px) {
+  .modal-lg .modal-dialog,
+  .modal-xl .modal-dialog {
+    max-width: 90%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   [6.0] Utility Classes for Modals
+   -------------------------------------------------------------------------- */
+/* For scrollable modal content */
+.modal-dialog-scrollable .modal-content {
+  max-height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.modal-dialog-scrollable .modal-body {
+  overflow-y: auto;
+}
+
+/* For centered modal */
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3.5rem);
+}
+
+/* For fullscreen modal */
+.modal-fullscreen {
+  width: 100vw;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+
+.modal-fullscreen .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   [7.0] Animation Effects
+   -------------------------------------------------------------------------- */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.modal.animate-in .modal-dialog {
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal.animate-out .modal-dialog {
+  animation: modalFadeOut 0.3s ease forwards;
+}

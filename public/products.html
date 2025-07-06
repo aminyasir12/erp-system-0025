@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المنتجات - نظام إدارة الأعمال</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/main-styles.css">
+  <link rel="stylesheet" href="css/modal-styles.css">
+<!-- <style>
+  /* --- Global Styles & ERP-Inspired Variables (Consistent) --- */
+:root {
+  --erp-primary-color: #714B67;
+  --erp-primary-color-dark: #583A50;
+  --erp-primary-color-light: rgba(113, 75, 103, 0.1);
+  --erp-secondary-color: #4A5568;
+  --erp-success-color: #38A169;
+  --erp-warning-color: #DD6B20;
+  --erp-danger-color: #E53E3E;
+  --erp-info-color: #3182CE;
+
+  --erp-body-bg: #F7FAFC;
+  --erp-content-bg: #FFFFFF;
+  --erp-sidebar-bg: #323A46;
+  --erp-sidebar-text-color: #CBD5E0;
+  --erp-sidebar-active-bg: var(--erp-primary-color);
+  --erp-sidebar-hover-bg: #4A5568;
+  --erp-text-color: #2D3748;
+  --erp-text-muted-color: #718096;
+  --erp-border-color: #E2E8F0;
+
+  --erp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --erp-font-size-base: 14px;
+  --erp-border-radius: 4px;
+  --erp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --erp-input-height: 38px;
+}
+
+body {
+  font-family: var(--erp-font-family);
+  background-color: var(--erp-body-bg);
+  color: var(--erp-text-color);
+  margin: 0;
+  font-size: var(--erp-font-size-base);
+  line-height: 1.5;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Dashboard Layout --- */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar Styling (Consistent) --- */
+.sidebar {
+  width: 240px;
+  background-color: var(--erp-sidebar-bg);
+  color: var(--erp-sidebar-text-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.05); /* For RTL */
+}
+
+.sidebar-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #FFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding-top: 15px;
+  overflow-y: auto;
+}
+
+.sidebar-menu .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--erp-sidebar-text-color);
+  text-decoration: none;
+  font-size: 0.95em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  border-right: 3px solid transparent; /* For RTL */
+}
+.sidebar-menu .menu-item span {
+    flex-grow: 1;
+}
+
+.sidebar-menu .menu-item i {
+  margin-left: 12px;
+  font-size: 1.05em;
+  width: 18px;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.sidebar-menu .menu-item:hover {
+  background-color: var(--erp-sidebar-hover-bg);
+  color: #FFF;
+}
+.sidebar-menu .menu-item:hover i {
+  opacity: 1;
+}
+
+.sidebar-menu .menu-item.active {
+  background-color: var(--erp-sidebar-active-bg);
+  color: #FFF;
+  font-weight: 500;
+  border-right-color: #FFF;
+}
+.sidebar-menu .menu-item.active i {
+  opacity: 1;
+}
+
+
+/* --- Main Content Styling (Consistent) --- */
+.main-content {
+  flex-grow: 1;
+  padding: 20px 25px;
+  overflow-y: auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--erp-border-color);
+}
+
+.page-header h1 {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin: 0;
+}
+
+/* --- Button Styling (Consistent) --- */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: var(--erp-font-size-base);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  height: var(--erp-input-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn i {
+  margin-left: 6px; /* For RTL */
+}
+
+.btn-primary {
+  background-color: var(--erp-primary-color);
+  color: #FFF;
+  border-color: var(--erp-primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-dark);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
+}
+
+.btn-outline-secondary {
+  color: var(--erp-secondary-color);
+  border-color: var(--erp-border-color);
+  background-color: transparent;
+}
+.btn-outline-secondary:hover {
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-light);
+}
+.btn-outline-danger {
+  color: var(--erp-danger-color);
+  border-color: var(--erp-danger-color);
+  background-color: transparent;
+}
+.btn-outline-danger:hover {
+  background-color: var(--erp-danger-color);
+  color: #FFF;
+  border-color: var(--erp-danger-color);
+}
+
+
+.btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: calc(var(--erp-font-size-base) - 1px);
+  height: calc(var(--erp-input-height) - 6px);
+}
+
+/* --- Card Styling (Consistent) --- */
+.card {
+  background-color: var(--erp-content-bg);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  margin-bottom: 25px;
+}
+
+.card-header {
+  background-color: #F9FAFB;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--erp-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 50px;
+}
+
+/* Search Box and Button Group in Card Header */
+.card-header .search-box {
+  position: relative;
+  width: 250px; /* Adjust as needed */
+  margin-left: auto; /* Push to the left in RTL if btn-group is also present */
+}
+.card-header .search-box .form-control {
+  padding-right: 35px;
+  border-radius: var(--erp-border-radius);
+  font-size: var(--erp-font-size-base);
+  height: calc(var(--erp-input-height) - 4px); /* Match button height */
+  border: 1px solid var(--erp-border-color);
+  background-color: var(--erp-content-bg);
+}
+.card-header .search-box .form-control:focus {
+  border-color: var(--erp-primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+  outline: none;
+}
+.card-header .search-box i.fa-search {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--erp-text-muted-color);
+  font-size: 0.9em;
+}
+
+.card-header .btn-group {
+  display: flex;
+  gap: 8px; /* Space between buttons in the group */
+}
+.card-header .btn-group .btn {
+    height: calc(var(--erp-input-height) - 4px); /* Match search input height */
+    padding: 0.4rem 0.8rem; /* Adjust padding for smaller buttons if needed */
+}
+
+
+.card-body {
+  padding: 18px;
+}
+
+/* Table Styling (Consistent) */
+.table-responsive {
+  /* border: 1px solid var(--erp-border-color); Optional if table has borders */
+  /* border-radius: var(--erp-border-radius); */
+  /* overflow: hidden; */
+}
+.table {
+  width: 100%;
+  margin-bottom: 1rem; /* Space before pagination */
+  font-size: var(--erp-font-size-base);
+  border-collapse: collapse;
+}
+.table thead th {
+  background-color: #F9FAFB;
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+  border-bottom: 2px solid var(--erp-border-color);
+  border-top: 1px solid var(--erp-border-color);
+  padding: 10px 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+.table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--erp-border-color);
+  color: var(--erp-text-color);
+}
+.table tbody tr:last-child td {
+    /* border-bottom: none; If pagination is separate, keep border */
+}
+.table-hover tbody tr:hover {
+  background-color: var(--erp-primary-color-light);
+}
+
+.table img.rounded { /* Assuming .rounded is for border-radius */
+  border-radius: var(--erp-border-radius) !important; /* Ensure consistency */
+  border: 1px solid var(--erp-border-color);
+  object-fit: cover;
+}
+
+/* Badge Styling (Consistent) */
+.badge {
+  padding: 0.35em 0.6em !important;
+  font-size: 0.8em !important;
+  font-weight: 500 !important;
+  border-radius: var(--erp-border-radius) !important;
+  line-height: 1;
+  text-transform: capitalize;
+}
+.badge-success { /* For older Bootstrap or custom class */
+  background-color: rgba(56, 161, 105, 0.1) !important;
+  color: var(--erp-success-color) !important;
+}
+/* If using Bootstrap 5, .bg-success will be styled by its own rules or the global overrides */
+/* You might need to be more specific if .badge.bg-success is used */
+.table .badge.bg-success {
+  background-color: rgba(56, 161, 105, 0.1) !important;
+  color: var(--erp-success-color) !important;
+}
+
+
+.action-buttons .btn {
+    margin: 0 2px;
+}
+.action-buttons .btn i {
+    margin-left: 0;
+}
+
+/* Pagination Styling */
+.pagination {
+  margin-top: 1rem; /* Ensure it's below the table */
+  gap: 5px; /* Space between pagination items */
+}
+.page-item .page-link {
+  color: var(--erp-primary-color);
+  border: 1px solid var(--erp-border-color);
+  border-radius: var(--erp-border-radius);
+  padding: 0.4rem 0.75rem;
+  font-size: var(--erp-font-size-base);
+  min-width: 34px; /* Ensure a minimum width for numbers */
+  text-align: center;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.page-item .page-link:hover {
+  background-color: var(--erp-primary-color-light);
+  border-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color-dark);
+}
+.page-item.active .page-link {
+  background-color: var(--erp-primary-color);
+  border-color: var(--erp-primary-color);
+  color: #FFF;
+  z-index: 3;
+}
+.page-item.disabled .page-link {
+  color: var(--erp-text-muted-color);
+  background-color: var(--erp-body-bg);
+  border-color: var(--erp-border-color);
+  pointer-events: none;
+}
+
+
+/* --- Modal & Form Styling (Consistent) --- */
+.modal-content {
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+  background-color: #F9FAFB;
+  border-bottom: 1px solid var(--erp-border-color);
+  padding: 12px 18px;
+}
+.modal-title { font-size: 1.15em; font-weight: 600; color: var(--erp-text-color); }
+.btn-close { background-size: 0.7em; filter: grayscale(1) opacity(0.7); }
+.btn-close:hover { filter: grayscale(0) opacity(1); }
+.btn-close:focus { box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25); }
+.modal-body { padding: 18px; }
+.modal-body .row .mb-3, /* Targeting Bootstrap's mb-3 within a row */
+.modal-body > .mb-3 { /* Targeting direct mb-3 children of modal-body */
+    margin-bottom: 0.85rem !important; /* Slightly more compact spacing in modal */
+}
+
+.form-label {
+  font-weight: 500; margin-bottom: 0.35rem; font-size: var(--erp-font-size-base); color: var(--erp-text-color); display: block;
+}
+.form-control, .form-select {
+  border: 1px solid var(--erp-border-color); border-radius: var(--erp-border-radius); padding: 0.45rem 0.75rem;
+  font-size: var(--erp-font-size-base); height: var(--erp-input-height); width: 100%;
+  background-color: var(--erp-content-bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--erp-primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+  outline: none; background-color: var(--erp-content-bg);
+}
+.text-danger { color: var(--erp-danger-color) !important; }
+textarea.form-control { height: auto; min-height: calc(var(--erp-input-height) * 2); }
+.input-group-text {
+  background-color: #F9FAFB;
+  border: 1px solid var(--erp-border-color);
+  border-radius: var(--erp-border-radius);
+  color: var(--erp-text-muted-color);
+  font-size: var(--erp-font-size-base);
+  padding: 0.45rem 0.75rem;
+  height: var(--erp-input-height);
+}
+.modal-footer {
+  background-color: #F9FAFB;
+  border-top: 1px solid var(--erp-border-color);
+  padding: 12px 18px;
+  display: flex;
+  justify-content: flex-start; /* For RTL, buttons start from right */
+}
+.modal-footer .btn {
+    margin-left: 8px; /* For RTL, space after each button */
+}
+.modal-footer .btn:last-child {
+    margin-left: 0;
+}
+
+
+/* Plugin Compatibility (DataTables - Consistent) */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  height: calc(var(--erp-input-height) - 4px) !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  padding: 0.35rem 0.6rem !important; margin: 0 5px;
+  background-color: var(--erp-content-bg) !important;
+}
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 1rem !important; /* Override default DataTable pagination margin */
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.4rem 0.75rem !important; /* Match our pagination style */
+  margin: 0 2px !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  color: var(--erp-primary-color) !important;
+  min-width: 34px !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--erp-primary-color-light) !important;
+  border-color: var(--erp-primary-color-light) !important;
+  color: var(--erp-primary-color-dark) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--erp-primary-color) !important;
+  color: white !important;
+  border: 1px solid var(--erp-primary-color) !important;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+    color: var(--erp-text-muted-color) !important;
+    font-size: 0.9em;
+}
+
+
+/* --- Scrollbar (Consistent) --- */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--erp-body-bg); }
+::-webkit-scrollbar-thumb { background: #BCC1C8; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #A0A6AD; }
+
+/* Placeholder (Consistent) */
+::placeholder { color: #A0AEC0; opacity: 1; }
+</style> -->
+
+</head>
+<body>
+  <div class="dashboard">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>نظام إدارة الأعمال</h3>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="/dashboard" class="menu-item">
+          <i class="fas fa-home"></i>
+          <span>الرئيسية</span>
+        </a>
+        <a href="/products" class="menu-item active">
+          <i class="fas fa-box"></i>
+          <span>المنتجات</span>
+        </a>
+        <a href="/sales" class="menu-item">
+          <i class="fas fa-shopping-cart"></i>
+          <span>المبيعات</span>
+        </a>
+        <a href="/purchases" class="menu-item">
+          <i class="fas fa-shopping-bag"></i>
+          <span>المشتريات</span>
+        </a>
+        <a href="/customers" class="menu-item">
+          <i class="fas fa-users"></i>
+          <span>العملاء</span>
+        </a>
+        <a href="/suppliers" class="menu-item">
+          <i class="fas fa-truck"></i>
+          <span>الموردون</span>
+        </a>
+        <a href="/reports" class="menu-item">
+          <i class="fas fa-chart-bar"></i>
+          <span>التقارير</span>
+        </a>
+        <a href="/settings" class="menu-item">
+          <i class="fas fa-cog"></i>
+          <span>الإعدادات</span>
+        </a>
+      </nav>
+    </aside>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>إدارة المنتجات</h1>
+        <div>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <i class="fas fa-plus"></i>
+            إضافة منتج جديد
+          </button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="search-box">
+            <input type="text" class="form-control" placeholder="بحث...">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-secondary">
+              <i class="fas fa-filter"></i>
+              تصفية
+            </button>
+            <button class="btn btn-outline-secondary">
+              <i class="fas fa-download"></i>
+              تصدير
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover" id="productsTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>صورة المنتج</th>
+                  <th>اسم المنتج</th>
+                  <th>الرمز</th>
+                  <th>الفئة</th>
+                  <th>السعر</th>
+                  <th>الكمية</th>
+                  <th>الحالة</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img src="https://via.placeholder.com/40" alt="Product" class="rounded" width="40" height="40">
+                  </td>
+                  <td>هاتف ذكي XYZ</td>
+                  <td>PRD-001</td>
+                  <td>الكترونيات</td>
+                  <td>2,499 ر.س</td>
+                  <td>45</td>
+                  <td><span class="badge badge-success">متوفر</span></td>
+                  <td class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" title="عرض">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" title="تعديل">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" title="حذف">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <!-- المزيد من الصفوف... -->
+              </tbody>
+            </table>
+          </div>
+          
+          <nav aria-label="صفحات الجدول">
+            <ul class="pagination justify-content-end">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">التالي</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- نموذج إضافة منتج جديد -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">إضافة منتج جديد</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addProductForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">اسم المنتج</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">الرمز</label>
+                <input type="text" class="form-control" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">الفئة</label>
+                <select class="form-select" required>
+                  <option value="">اختر الفئة</option>
+                  <option value="1">الكترونيات</option>
+                  <option value="2">ملابس</option>
+                  <option value="3">أثاث</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">الكمية في المخزن</label>
+                <input type="number" class="form-control" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">سعر الشراء</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" step="0.01" required>
+                  <span class="input-group-text">ر.س</span>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">سعر البيع</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" step="0.01" required>
+                  <span class="input-group-text">ر.س</span>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">الوصف</label>
+              <textarea class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">صورة المنتج</label>
+              <input type="file" class="form-control" accept="image/*">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button type="submit" form="addProductForm" class="btn btn-primary">حفظ المنتج</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // تهيئة جدول المنتجات
+      $('#productsTable').DataTable({
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/ar.json'
+        },
+        order: [[0, 'desc']],
+        responsive: true
+      });
+      
+      // إظهار رسالة نجاح عند حفظ المنتج
+      $('#addProductForm').on('submit', function(e) {
+        e.preventDefault();
+        // إغلاق النموذج
+        var addProductModal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+        addProductModal.hide();
+        
+        // إظهار رسالة نجاح
+        alert('تمت إضافة المنتج بنجاح');
+        
+        // إعادة تحميل الصفحة أو تحديث الجدول
+        // location.reload();
+      });
+    });
+  </script>
+</body>
+</html>

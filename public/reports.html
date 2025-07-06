@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التقارير - نظام إدارة الأعمال</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/main-styles.css">
+<!-- <style>
+    /* --- Global Styles & ERP-Inspired Variables (Consistent) --- */
+:root {
+  --erp-primary-color: #714B67;
+  --erp-primary-color-dark: #583A50;
+  --erp-primary-color-light: rgba(113, 75, 103, 0.1);
+  --erp-secondary-color: #4A5568;
+  --erp-success-color: #38A169;
+  --erp-warning-color: #DD6B20;
+  --erp-danger-color: #E53E3E;
+  --erp-info-color: #3182CE;
+
+  --erp-body-bg: #F7FAFC;
+  --erp-content-bg: #FFFFFF;
+  --erp-sidebar-bg: #323A46;
+  --erp-sidebar-text-color: #CBD5E0;
+  --erp-sidebar-active-bg: var(--erp-primary-color);
+  --erp-sidebar-hover-bg: #4A5568;
+  --erp-text-color: #2D3748;
+  --erp-text-muted-color: #718096;
+  --erp-border-color: #E2E8F0;
+
+  --erp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --erp-font-size-base: 14px;
+  --erp-border-radius: 4px;
+  --erp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --erp-input-height: 38px;
+}
+
+body {
+  font-family: var(--erp-font-family);
+  background-color: var(--erp-body-bg);
+  color: var(--erp-text-color);
+  margin: 0;
+  font-size: var(--erp-font-size-base);
+  line-height: 1.5;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Dashboard Layout --- */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar Styling (Consistent) --- */
+.sidebar {
+  width: 240px;
+  background-color: var(--erp-sidebar-bg);
+  color: var(--erp-sidebar-text-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.05); /* For RTL */
+}
+
+.sidebar-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #FFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding-top: 15px;
+  overflow-y: auto;
+}
+
+.sidebar-menu .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--erp-sidebar-text-color);
+  text-decoration: none;
+  font-size: 0.95em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  border-right: 3px solid transparent; /* For RTL */
+}
+
+.sidebar-menu .menu-item i {
+  margin-left: 12px;
+  font-size: 1.05em;
+  width: 18px;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.sidebar-menu .menu-item:hover {
+  background-color: var(--erp-sidebar-hover-bg);
+  color: #FFF;
+}
+.sidebar-menu .menu-item:hover i {
+  opacity: 1;
+}
+
+.sidebar-menu .menu-item.active {
+  background-color: var(--erp-sidebar-active-bg);
+  color: #FFF;
+  font-weight: 500;
+  border-right-color: #FFF;
+}
+.sidebar-menu .menu-item.active i {
+  opacity: 1;
+}
+.sidebar-menu .menu-item.coming-soon {
+  color: var(--erp-text-muted-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.sidebar-menu .menu-item.coming-soon:hover {
+  background-color: transparent;
+  color: var(--erp-text-muted-color);
+}
+
+
+/* --- Main Content Styling (Consistent) --- */
+.main-content {
+  flex-grow: 1;
+  padding: 20px 25px;
+  overflow-y: auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--erp-border-color);
+}
+
+.page-header h1 {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin: 0;
+}
+.page-header .actions {
+    display: flex;
+    gap: 10px; /* Space between action buttons */
+}
+
+
+/* --- Button Styling (Consistent) --- */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: var(--erp-font-size-base);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  height: var(--erp-input-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn i {
+  margin-left: 6px; /* For RTL */
+}
+
+.btn-primary {
+  background-color: var(--erp-primary-color);
+  color: #FFF;
+  border-color: var(--erp-primary-color);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-dark);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
+}
+
+.btn-outline-secondary {
+  color: var(--erp-secondary-color);
+  border-color: var(--erp-border-color);
+  background-color: transparent;
+}
+.btn-outline-secondary:hover {
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-light);
+}
+
+/* --- Report Filters Section --- */
+.report-filters {
+  background-color: var(--erp-content-bg);
+  padding: 18px;
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  margin-bottom: 25px;
+}
+.report-filters .form-label {
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  font-size: calc(var(--erp-font-size-base) - 1px); /* Slightly smaller label for filters */
+  color: var(--erp-text-muted-color);
+  display: block;
+}
+.report-filters .form-select,
+.report-filters .form-control {
+  height: var(--erp-input-height);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  padding: 0.45rem 0.75rem;
+  font-size: var(--erp-font-size-base);
+  background-color: var(--erp-content-bg);
+}
+.report-filters .form-select:focus,
+.report-filters .form-control:focus {
+  border-color: var(--erp-primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+  outline: none;
+}
+.report-filters .btn { /* Apply Filter button */
+    height: var(--erp-input-height);
+    /* w-100 class from Bootstrap handles width */
+}
+/* For Bootstrap 5 g-3 class */
+.report-filters .row.g-3 {
+    display: flex;
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.report-filters .d-flex.align-items-end { /* To align button correctly */
+    align-self: flex-end !important; /* Override BS class if necessary */
+}
+
+
+/* --- Report Card (for charts and tables) --- */
+.report-card {
+  background-color: var(--erp-content-bg);
+  padding: 18px;
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  margin-bottom: 25px; /* Default margin for cards */
+}
+.report-card.mt-4 { /* Bootstrap margin class */
+    margin-top: 1.5rem !important; /* Default BS mt-4 */
+}
+
+.report-card h5 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--erp-border-color);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px; /* Adjust height as needed */
+  width: 100%;
+}
+/* Ensure canvas is responsive inside the container */
+.chart-container canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* Table Styling (Consistent) */
+.table { /* Applied within .report-card */
+  width: 100%;
+  margin-bottom: 0; /* No margin if it's the last element in card */
+  font-size: var(--erp-font-size-base);
+  border-collapse: collapse;
+}
+.table thead th {
+  background-color: #F9FAFB;
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+  border-bottom: 2px solid var(--erp-border-color);
+  border-top: 1px solid var(--erp-border-color);
+  padding: 10px 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+.table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--erp-border-color);
+  color: var(--erp-text-color);
+}
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+.table .text-success { color: var(--erp-success-color) !important; font-weight: 500; }
+
+/* Badge Styling (Consistent) */
+.badge {
+  padding: 0.35em 0.6em !important;
+  font-size: 0.8em !important;
+  font-weight: 500 !important;
+  border-radius: var(--erp-border-radius) !important;
+  line-height: 1;
+  text-transform: capitalize;
+}
+.bg-success { /* For .badge.bg-success from Bootstrap */
+  background-color: rgba(56, 161, 105, 0.1) !important;
+  color: var(--erp-success-color) !important;
+}
+
+
+/* Plugin Compatibility (DataTables, Flatpickr - Consistent) */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  height: calc(var(--erp-input-height) - 4px) !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  padding: 0.35rem 0.6rem !important; margin: 0 5px;
+  background-color: var(--erp-content-bg) !important;
+}
+.dataTables_wrapper .dataTables_paginate { margin-top: 1rem !important; }
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.4rem 0.75rem !important; margin: 0 2px !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  color: var(--erp-primary-color) !important; min-width: 34px !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--erp-primary-color-light) !important;
+  border-color: var(--erp-primary-color-light) !important;
+  color: var(--erp-primary-color-dark) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--erp-primary-color) !important;
+  color: white !important;
+  border: 1px solid var(--erp-primary-color) !important;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+    color: var(--erp-text-muted-color) !important;
+    font-size: 0.9em;
+}
+
+/* Flatpickr Customization */
+.flatpickr-input {
+    /* Base styles are inherited from .form-control */
+    cursor: pointer;
+}
+.flatpickr-calendar {
+    background: var(--erp-content-bg);
+    border: 1px solid var(--erp-border-color);
+    border-radius: var(--erp-border-radius);
+    box-shadow: var(--erp-box-shadow);
+    font-family: var(--erp-font-family);
+    width: auto !important; /* Allow it to size based on content */
+}
+.flatpickr-months .flatpickr-month {
+    color: var(--erp-text-color);
+    fill: var(--erp-text-color);
+}
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    color: var(--erp-primary-color);
+    fill: var(--erp-primary-color);
+}
+.flatpickr-weekday {
+    color: var(--erp-text-muted-color);
+    font-weight: 500;
+}
+.flatpickr-day {
+    color: var(--erp-text-color);
+}
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+    background: var(--erp-primary-color);
+    border-color: var(--erp-primary-color);
+    color: #FFF;
+}
+.flatpickr-day.today {
+    border-color: var(--erp-primary-color);
+}
+.flatpickr-day.today:hover {
+    background: var(--erp-primary-color-light);
+    color: var(--erp-primary-color);
+    border-color: var(--erp-primary-color);
+}
+.flatpickr-day:hover {
+    background: var(--erp-body-bg);
+}
+
+
+/* --- Scrollbar (Consistent) --- */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--erp-body-bg); }
+::-webkit-scrollbar-thumb { background: #BCC1C8; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #A0A6AD; }
+
+/* Placeholder (Consistent) */
+::placeholder { color: #A0AEC0; opacity: 1; }
+</style> -->
+
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>نظام إدارة الأعمال</h3>
+      </div>
+      <nav class="sidebar-menu">
+          <a href="dashboard.html" class="menu-item"><i class="fas fa-home"></i> الرئيسية</a>
+          <a href="#" class="menu-item coming-soon"><i class="fas fa-shopping-cart"></i> المبيعات (قريباً)</a>
+          <a href="purchases.html" class="menu-item"><i class="fas fa-shopping-bag"></i> المشتريات</a>
+          <a href="inventory.html" class="menu-item"><i class="fas fa-warehouse"></i> المخزون</a>
+          <a href="accounting.html" class="menu-item"><i class="fas fa-calculator"></i> المحاسبة</a>
+          <a href="hr.html" class="menu-item"><i class="fas fa-users"></i> الموارد البشرية</a>
+          <a href="reports.html" class="menu-item active"><i class="fas fa-chart-bar"></i> التقارير</a>
+          <a href="settings.html" class="menu-item"><i class="fas fa-cog"></i> الإعدادات</a>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="page-header">
+        <h1>التقارير والتحليلات</h1>
+        <div class="actions">
+          <button class="btn btn-outline-secondary"><i class="fas fa-file-export"></i> تصدير</button>
+          <button class="btn btn-primary"><i class="fas fa-print"></i> طباعة</button>
+        </div>
+      </div>
+      
+      <div class="report-filters">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">نوع التقرير</label>
+            <select class="form-select">
+              <option>تقرير المبيعات</option>
+              <option>تقرير المشتريات</option>
+              <option>تقرير المخزون</option>
+              <option>تقرير المالية</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">من تاريخ</label>
+            <input type="text" class="form-control datepicker" placeholder="اختر التاريخ">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">إلى تاريخ</label>
+            <input type="text" class="form-control datepicker" placeholder="اختر التاريخ">
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-primary w-100">تطبيق الفلتر</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-8">
+          <div class="report-card">
+            <h5>تحليل المبيعات الشهري</h5>
+            <div class="chart-container">
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="report-card">
+            <h5>توزيع المبيعات</h5>
+            <div class="chart-container">
+              <canvas id="salesDistribution"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="report-card mt-4">
+        <h5>أحدث المعاملات</h5>
+        <table id="transactionsTable" class="table">
+          <thead>
+            <tr>
+              <th>التاريخ</th>
+              <th>الوصف</th>
+              <th>المبلغ</th>
+              <th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2023-06-24</td>
+              <td>فاتورة مبيعات #1001</td>
+              <td class="text-success">+2,450 ر.س</td>
+              <td><span class="badge bg-success">مكتمل</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Initialize date picker
+      $('.datepicker').flatpickr({
+        locale: 'ar',
+        dateFormat: 'Y-m-d',
+        allowInput: true
+      });
+      
+      // Initialize DataTable
+      $('#transactionsTable').DataTable({
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/ar.json'
+        },
+        order: [[0, 'desc']]
+      });
+      
+      // Sample charts (you would replace with actual data)
+      const salesCtx = document.getElementById('salesChart').getContext('2d');
+      new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+          datasets: [{
+            label: 'المبيعات',
+            data: [12000, 19000, 15000, 25000, 22000, 30000],
+            borderColor: '#4e73df',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+      
+      const distCtx = document.getElementById('salesDistribution').getContext('2d');
+      new Chart(distCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['منتج أ', 'منتج ب', 'منتج ج', 'منتج د'],
+          datasets: [{
+            data: [30, 25, 20, 25],
+            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار النهج المختلط - jQuery + Vanilla JS</title>
+    
+    <!-- Bootstrap RTL CSS (فقط) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Select2 Bootstrap 5 Theme (للعمليات المعقدة) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .btn {
+            margin: 5px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>اختبار النهج المختلط</h1>
+        <p class="text-muted">jQuery للعمليات المعقدة + Vanilla JS للعمليات البسيطة</p>
+        
+        <div class="test-section">
+            <h3>🔧 العمليات البسيطة (Vanilla JS):</h3>
+            <button id="simpleBtn" class="btn btn-outline-primary">
+                <i class="fas fa-mouse-pointer"></i> زر بسيط (Vanilla JS)
+            </button>
+            <button id="modalBtn" class="btn btn-outline-success">
+                <i class="fas fa-window-maximize"></i> نافذة منبثقة (Vanilla JS)
+            </button>
+        </div>
+        
+        <div class="test-section">
+            <h3>⚡ العمليات المعقدة (jQuery):</h3>
+            <div class="mb-3">
+                <label class="form-label">Select2 معقد (jQuery):</label>
+                <select id="complexSelect" class="form-select">
+                    <option value="">اختر خيار...</option>
+                    <option value="1">خيار 1</option>
+                    <option value="2">خيار 2</option>
+                    <option value="3">خيار 3</option>
+                </select>
+            </div>
+            <button id="ajaxBtn" class="btn btn-outline-warning">
+                <i class="fas fa-sync-alt"></i> محاكاة AJAX (jQuery)
+            </button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 حالة الاختبار:</h3>
+            <div id="testStatus" class="status info">
+                جاري اختبار النهج المختلط...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 سجل الأحداث:</h3>
+            <div id="eventLog" style="background: #f8f9fa; padding: 10px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
+                <div>بدء الاختبار...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة بسيطة (Vanilla JS) -->
+    <div class="modal" id="simpleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">نافذة منبثقة بسيطة</h5>
+                    <button type="button" class="btn-close" onclick="closeModal('simpleModal')" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هذه نافذة منبثقة تعمل بـ Vanilla JavaScript فقط!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" onclick="closeModal('simpleModal')">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (للعمليات المعقدة فقط) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Select2 (للعمليات المعقدة) -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        // دالة لتسجيل الأحداث
+        function logEvent(message, type = 'info') {
+            const log = document.getElementById('eventLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'blue';
+            log.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+
+        // دالة لتحديث حالة الاختبار
+        function updateStatus(message, type = 'info') {
+            const status = document.getElementById('testStatus');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        // دوال للتعامل مع النوافذ المنبثقة (Vanilla JS)
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                logEvent(`تم إغلاق النافذة المنبثقة: ${modalId}`, 'success');
+            }
+        }
+
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                modal.classList.add('show');
+                logEvent(`تم فتح النافذة المنبثقة: ${modalId}`, 'success');
+            }
+        }
+
+        // إعداد مستمعات الأحداث عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            logEvent('تم تحميل الصفحة بنجاح', 'success');
+            
+            // ===== العمليات البسيطة (Vanilla JS) =====
+            
+            // زر بسيط
+            const simpleBtn = document.getElementById('simpleBtn');
+            if (simpleBtn) {
+                simpleBtn.addEventListener('click', function() {
+                    logEvent('تم النقر على زر بسيط (Vanilla JS)', 'success');
+                    updateStatus('الزر البسيط يعمل بـ Vanilla JS', 'success');
+                });
+                logEvent('تم إعداد مستمع حدث للزر البسيط (Vanilla JS)');
+            }
+            
+            // زر النافذة المنبثقة
+            const modalBtn = document.getElementById('modalBtn');
+            if (modalBtn) {
+                modalBtn.addEventListener('click', function() {
+                    logEvent('تم النقر على زر النافذة المنبثقة (Vanilla JS)', 'success');
+                    showModal('simpleModal');
+                    updateStatus('النافذة المنبثقة تعمل بـ Vanilla JS', 'success');
+                });
+                logEvent('تم إعداد مستمع حدث لزر النافذة المنبثقة (Vanilla JS)');
+            }
+            
+            // إغلاق النوافذ المنبثقة عند النقر خارجها
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        this.style.display = 'none';
+                        this.classList.remove('show');
+                        logEvent('تم إغلاق النافذة المنبثقة بالنقر خارجها (Vanilla JS)', 'info');
+                    }
+                });
+            });
+            
+            // ===== العمليات المعقدة (jQuery) =====
+            
+            // تهيئة Select2 (jQuery للعمليات المعقدة)
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $('#complexSelect').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: 'اختر خيار...',
+                    allowClear: true,
+                    width: '100%'
+                });
+                
+                $('#complexSelect').on('change', function() {
+                    const value = $(this).val();
+                    logEvent(`تم تغيير Select2 إلى: ${value} (jQuery)`, 'success');
+                    updateStatus(`Select2 يعمل بـ jQuery - القيمة المحددة: ${value}`, 'success');
+                });
+                
+                logEvent('تم تهيئة Select2 بـ jQuery للعمليات المعقدة', 'success');
+            } else {
+                logEvent('jQuery أو Select2 غير متوفر', 'error');
+            }
+            
+            // زر محاكاة AJAX (jQuery للعمليات المعقدة)
+            $('#ajaxBtn').on('click', function() {
+                logEvent('بدء محاكاة AJAX (jQuery)', 'info');
+                
+                // محاكاة طلب AJAX
+                $.ajax({
+                    url: '/api/test',
+                    method: 'GET',
+                    timeout: 2000,
+                    success: function(data) {
+                        logEvent('تم استلام البيانات بنجاح (jQuery AJAX)', 'success');
+                        updateStatus('AJAX يعمل بـ jQuery بنجاح', 'success');
+                    },
+                    error: function(xhr, status, error) {
+                        // نتوقع خطأ لأن الخادم غير موجود
+                        logEvent('محاكاة AJAX مكتملة (jQuery) - خطأ متوقع', 'info');
+                        updateStatus('محاكاة AJAX مكتملة بـ jQuery', 'success');
+                    }
+                });
+            });
+            
+            logEvent('تم إعداد مستمع حدث لزر AJAX (jQuery)');
+            
+            updateStatus('تم إعداد جميع العمليات بنجاح - النهج المختلط يعمل!', 'success');
+            logEvent('تم الانتهاء من إعداد جميع مستمعات الأحداث', 'success');
+        });
+    </script>
+</body>
+</html> 

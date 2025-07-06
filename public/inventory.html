@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المخزون - نظام إدارة الأعمال</title>
+  
+  <!-- Bootstrap RTL CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <!-- Select2 Bootstrap 5 Theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/main-styles.css">
+  <link rel="stylesheet" href="css/modal-styles.css">
+  <link rel="stylesheet" href="css/notifications.css">
+<style>
+  /* --- Global Styles & ERP-Inspired Variables (Consistent) --- */
+:root {
+  --erp-primary-color: #714B67;
+  --erp-primary-color-dark: #583A50;
+  --erp-primary-color-light: rgba(113, 75, 103, 0.1);
+  --erp-secondary-color: #4A5568;
+  --erp-success-color: #38A169; /* Green for success/available */
+  --erp-warning-color: #DD6B20; /* Orange for low stock/warning */
+  --erp-danger-color: #E53E3E;  /* Red for out of stock/danger */
+  --erp-info-color: #3182CE;   /* Blue for general info/products */
+
+  --erp-body-bg: #F7FAFC;
+  --erp-content-bg: #FFFFFF;
+  --erp-sidebar-bg: #323A46;
+  --erp-sidebar-text-color: #CBD5E0;
+  --erp-sidebar-active-bg: var(--erp-primary-color);
+  --erp-sidebar-hover-bg: #4A5568;
+  --erp-text-color: #2D3748;
+  --erp-text-muted-color: #718096;
+  --erp-border-color: #E2E8F0;
+
+  --erp-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --erp-font-size-base: 14px;
+  --erp-border-radius: 4px;
+  --erp-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --erp-input-height: 38px;
+}
+
+body {
+  font-family: var(--erp-font-family);
+  background-color: var(--erp-body-bg);
+  color: var(--erp-text-color);
+  margin: 0;
+  font-size: var(--erp-font-size-base);
+  line-height: 1.5;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Dashboard Layout --- */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar Styling (Consistent) --- */
+.sidebar {
+  width: 240px;
+  background-color: var(--erp-sidebar-bg);
+  color: var(--erp-sidebar-text-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.05); /* For RTL */
+}
+
+.sidebar-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #FFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding-top: 15px;
+  overflow-y: auto;
+}
+
+.sidebar-menu .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--erp-sidebar-text-color);
+  text-decoration: none;
+  font-size: 0.95em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  border-right: 3px solid transparent; /* For RTL */
+}
+
+.sidebar-menu .menu-item i {
+  margin-left: 12px;
+  font-size: 1.05em;
+  width: 18px;
+  text-align: center;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.sidebar-menu .menu-item:hover {
+  background-color: var(--erp-sidebar-hover-bg);
+  color: #FFF;
+}
+.sidebar-menu .menu-item:hover i {
+  opacity: 1;
+}
+
+.sidebar-menu .menu-item.active {
+  background-color: var(--erp-sidebar-active-bg);
+  color: #FFF;
+  font-weight: 500;
+  border-right-color: #FFF;
+}
+.sidebar-menu .menu-item.active i {
+  opacity: 1;
+}
+.sidebar-menu .menu-item.coming-soon {
+  color: var(--erp-text-muted-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.sidebar-menu .menu-item.coming-soon:hover {
+  background-color: transparent;
+  color: var(--erp-text-muted-color);
+}
+
+
+/* --- Main Content Styling (Consistent) --- */
+.main-content {
+  flex-grow: 1;
+  padding: 20px 25px;
+  overflow-y: auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--erp-border-color);
+}
+
+.page-header h1 {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin: 0;
+}
+
+/* --- Button Styling (Consistent) --- */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: var(--erp-font-size-base);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  height: var(--erp-input-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn i {
+  margin-left: 6px; /* For RTL */
+}
+
+.btn-primary {
+  background-color: var(--erp-primary-color);
+  color: #FFF;
+  border-color: var(--erp-primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-dark);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
+}
+
+.btn-outline-secondary {
+  color: var(--erp-secondary-color);
+  border-color: var(--erp-border-color);
+  background-color: transparent;
+}
+.btn-outline-secondary:hover {
+  background-color: var(--erp-primary-color-light);
+  color: var(--erp-primary-color-dark);
+  border-color: var(--erp-primary-color-light);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: calc(var(--erp-font-size-base) - 1px);
+  height: calc(var(--erp-input-height) - 6px);
+}
+
+/* --- Inventory Stats Cards --- */
+.inventory-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.inventory-stats .stat-card {
+  background-color: var(--erp-content-bg);
+  padding: 18px;
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.inventory-stats .stat-card .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%; /* Or var(--erp-border-radius) for squared icons */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.inventory-stats .stat-card .icon i {
+  font-size: 1.5em; /* Larger icon in stat card */
+}
+
+/* Applying colors from inline styles to variables for consistency (if possible to change HTML)
+   If not, these specific icon styles will override general ones below.
+   For demonstration, I'll assume we can use general color variables for the text parts.
+*/
+.inventory-stats .stat-card:nth-child(1) .icon { background-color: rgba(25, 118, 210, 0.1); color: #1976d2;} /* Products - Blue */
+.inventory-stats .stat-card:nth-child(2) .icon { background-color: rgba(56, 142, 60, 0.1); color: #388e3c;} /* Available - Green */
+.inventory-stats .stat-card:nth-child(3) .icon { background-color: rgba(245, 124, 0, 0.1); color: #f57c00;} /* Low Stock - Orange */
+.inventory-stats .stat-card:nth-child(4) .icon { background-color: rgba(211, 47, 47, 0.1); color: #d32f2f;} /* Out of Stock - Red */
+
+
+.inventory-stats .stat-card .value {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--erp-text-color);
+  margin-bottom: 2px;
+  line-height: 1.1;
+}
+
+.inventory-stats .stat-card .label {
+  font-size: 0.85em;
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+}
+
+
+/* --- Card Styling (Consistent) --- */
+.card {
+  background-color: var(--erp-content-bg);
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: var(--erp-box-shadow);
+  margin-bottom: 25px;
+}
+
+.card-header {
+  background-color: #F9FAFB;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--erp-border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 50px;
+}
+
+/* Tabs Styling (Consistent) */
+.nav-tabs {
+  border-bottom: 1px solid var(--erp-border-color);
+  margin-bottom: -1px;
+}
+.nav-tabs .nav-item {
+  margin-left: 0; /* For RTL */
+}
+.nav-tabs .nav-link {
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-top-left-radius: var(--erp-border-radius);
+  border-top-right-radius: var(--erp-border-radius);
+  margin-right: 2px; /* For RTL */
+  font-size: var(--erp-font-size-base);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.nav-tabs .nav-link:hover {
+  color: var(--erp-text-color);
+  background-color: var(--erp-body-bg);
+}
+.nav-tabs .nav-link.active {
+  color: var(--erp-primary-color);
+  background-color: var(--erp-content-bg);
+  border-color: var(--erp-border-color);
+  border-bottom-color: var(--erp-content-bg);
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+/* Search Box in Card Header (Consistent) */
+.card-header .search-box {
+  position: relative;
+  width: 220px;
+}
+.card-header .search-box .form-control { /* Specific to .form-control inside .search-box */
+  padding-right: 35px;
+  border-radius: var(--erp-border-radius);
+  font-size: var(--erp-font-size-base);
+  height: calc(var(--erp-input-height) - 4px);
+  border: 1px solid var(--erp-border-color); /* Add border for input in search */
+  background-color: var(--erp-content-bg); /* Ensure background is white */
+}
+.card-header .search-box .form-control:focus {
+  border-color: var(--erp-primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+  outline: none;
+}
+
+.card-header .search-box i.fa-search {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--erp-text-muted-color);
+  font-size: 0.9em;
+}
+
+.card-body {
+  padding: 18px;
+}
+
+/* Table Styling (Consistent) */
+.table-responsive {
+  /* Can add a border here if needed, or rely on table's border */
+}
+.table {
+  width: 100%;
+  margin-bottom: 0;
+  font-size: var(--erp-font-size-base);
+  border-collapse: collapse;
+}
+.table thead th {
+  background-color: #F9FAFB;
+  color: var(--erp-text-muted-color);
+  font-weight: 500;
+  border-bottom: 2px solid var(--erp-border-color);
+  border-top: 1px solid var(--erp-border-color);
+  padding: 10px 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+.table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--erp-border-color);
+  color: var(--erp-text-color);
+}
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+.table-hover tbody tr:hover {
+  background-color: var(--erp-primary-color-light);
+}
+
+.product-image {
+  width: 36px; /* Slightly larger for product images */
+  height: 36px;
+  border-radius: var(--erp-border-radius); /* Can be 50% for circular if preferred */
+  object-fit: cover;
+  border: 1px solid var(--erp-border-color);
+  /* me-2 class from Bootstrap is margin-left for RTL */
+}
+
+.fw-medium { font-weight: 500 !important; }
+small.text-muted { color: var(--erp-text-muted-color) !important; font-size: 0.85em; }
+.text-muted.d-block { display: block !important; }
+
+/* Stock level indicators */
+.table .high-stock { color: var(--erp-success-color); font-weight: 500; }
+.table .medium-stock { color: var(--erp-warning-color); font-weight: 500; }
+.table .low-stock { color: var(--erp-danger-color); font-weight: 500; }
+
+/* Badge Styling (Consistent) */
+.badge {
+  padding: 0.35em 0.6em !important;
+  font-size: 0.8em !important;
+  font-weight: 500 !important;
+  border-radius: var(--erp-border-radius) !important;
+  line-height: 1;
+  text-transform: capitalize;
+}
+.bg-success {
+  background-color: rgba(56, 161, 105, 0.1) !important;
+  color: var(--erp-success-color) !important;
+  /* border: 1px solid var(--erp-success-color); */ /* Optional border */
+}
+.bg-warning {
+  background-color: rgba(221, 107, 32, 0.1) !important;
+  color: var(--erp-warning-color) !important;
+}
+.bg-danger {
+  background-color: rgba(229, 62, 62, 0.1) !important;
+  color: var(--erp-danger-color) !important;
+}
+
+.action-buttons .btn {
+    margin: 0 2px; /* Small space between action buttons */
+}
+.action-buttons .btn i {
+    margin-left: 0; /* No extra margin for icon-only buttons */
+}
+
+/* Alert Styling (Consistent) */
+.alert {
+  border-radius: var(--erp-border-radius);
+  padding: 12px 15px;
+  font-size: var(--erp-font-size-base);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+}
+.alert i { margin-left: 8px; font-size: 1.1em; }
+.alert-warning {
+  background-color: #FFFBEB; border-color: #FBD38D; color: #975A16;
+}
+.alert-warning i { color: var(--erp-warning-color); }
+.alert-danger {
+  background-color: #FFF5F5; border-color: #FEB2B2; color: #9B2C2C;
+}
+.alert-danger i { color: var(--erp-danger-color); }
+
+/* --- Modal & Form Styling (Consistent) --- */
+.modal-content {
+  border-radius: var(--erp-border-radius);
+  border: 1px solid var(--erp-border-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+  background-color: #F9FAFB;
+  border-bottom: 1px solid var(--erp-border-color);
+  padding: 12px 18px;
+}
+.modal-title { font-size: 1.15em; font-weight: 600; color: var(--erp-text-color); }
+.btn-close { background-size: 0.7em; filter: grayscale(1) opacity(0.7); }
+.btn-close:hover { filter: grayscale(0) opacity(1); }
+.btn-close:focus { box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25); }
+.modal-body { padding: 18px; }
+.modal-body .row { margin-bottom: 1rem !important; }
+.modal-body .mb-3 { margin-bottom: 0.75rem !important; }
+
+.form-label {
+  font-weight: 500; margin-bottom: 0.35rem; font-size: var(--erp-font-size-base); color: var(--erp-text-color); display: block;
+}
+.form-control, .form-select {
+  border: 1px solid var(--erp-border-color); border-radius: var(--erp-border-radius); padding: 0.45rem 0.75rem;
+  font-size: var(--erp-font-size-base); height: var(--erp-input-height); width: 100%;
+  background-color: var(--erp-content-bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--erp-primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+  outline: none; background-color: var(--erp-content-bg);
+}
+.text-danger { color: var(--erp-danger-color) !important; }
+textarea.form-control { height: auto; min-height: calc(var(--erp-input-height) * 2); }
+
+/* Plugin Compatibility (DataTables, Select2 - Consistent) */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  height: calc(var(--erp-input-height) - 4px) !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  padding: 0.35rem 0.6rem !important; margin: 0 5px;
+  background-color: var(--erp-content-bg) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.4em 0.8em !important; margin: 0 2px !important;
+  border-radius: var(--erp-border-radius) !important;
+  border: 1px solid var(--erp-border-color) !important;
+  color: var(--erp-text-muted-color) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--erp-primary-color-light) !important;
+  border-color: var(--erp-primary-color-light) !important;
+  color: var(--erp-primary-color-dark) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--erp-primary-color) !important;
+  color: white !important;
+  border: 1px solid var(--erp-primary-color) !important;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+    color: var(--erp-text-muted-color) !important;
+    font-size: 0.9em;
+}
+
+.select2-container--bootstrap-5 .select2-selection {
+    height: var(--erp-input-height) !important;
+    border-radius: var(--erp-border-radius) !important;
+    border: 1px solid var(--erp-border-color) !important;
+    padding: 0.35rem .75rem !important;
+    font-size: var(--erp-font-size-base) !important;
+}
+.select2-container--bootstrap-5.select2-container--focus .select2-selection,
+.select2-container--bootstrap-5.select2-container--open .select2-selection {
+    border-color: var(--erp-primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15) !important;
+}
+.select2-dropdown {
+    border-radius: var(--erp-border-radius) !important;
+    border: 1px solid var(--erp-border-color) !important;
+    box-shadow: var(--erp-box-shadow) !important;
+}
+
+/* --- Scrollbar (Consistent) --- */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--erp-body-bg); }
+::-webkit-scrollbar-thumb { background: #BCC1C8; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #A0A6AD; }
+
+/* Placeholder (Consistent) */
+::placeholder { color: #A0AEC0; opacity: 1; }
+</style>
+
+</head>
+<body>
+  <div class="dashboard">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>نظام إدارة الأعمال</h3>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="dashboard.html" class="menu-item"><i class="fas fa-home"></i> الرئيسية</a>
+        <a href="#" class="menu-item coming-soon"><i class="fas fa-shopping-cart"></i> المبيعات (قريباً)</a>
+        <a href="purchases.html" class="menu-item"><i class="fas fa-shopping-bag"></i> المشتريات</a>
+        <a href="inventory.html" class="menu-item active"><i class="fas fa-warehouse"></i> المخزون</a>
+        <a href="accounting.html" class="menu-item"><i class="fas fa-calculator"></i> المحاسبة</a>
+        <a href="hr.html" class="menu-item"><i class="fas fa-users"></i> الموارد البشرية</a>
+        <a href="reports.html" class="menu-item"><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="settings.html" class="menu-item"><i class="fas fa-cog"></i> الإعدادات</a>
+      </nav>
+    </aside>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>إدارة المخزون</h1>
+        <div>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+            <i class="fas fa-plus me-1"></i> إضافة حركة مخزون
+          </button>
+        </div>
+      </div>
+      
+      <!-- إحصائيات المخزون -->
+      <div class="inventory-stats">
+        <div class="stat-card">
+          <div class="icon" style="background-color: #e3f2fd; color: #1976d2;">
+            <i class="fas fa-boxes"></i>
+          </div>
+          <div class="value">1,245</div>
+          <div class="label">إجمالي المنتجات</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="icon" style="background-color: #e8f5e9; color: #388e3c;">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="value">1,023</div>
+          <div class="label">متوفرة في المخزون</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="icon" style="background-color: #fff3e0; color: #f57c00;">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="value">187</div>
+          <div class="label">منخفضة المخزون</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="icon" style="background-color: #ffebee; color: #d32f2f;">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div class="value">35</div>
+          <div class="label">منتهية من المخزون</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="inventoryTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
+                <i class="fas fa-boxes me-1"></i> جميع المنتجات
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="low-stock-tab" data-bs-toggle="tab" data-bs-target="#low-stock" type="button">
+                <i class="fas fa-exclamation-triangle me-1"></i> مخزون منخفض
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="out-of-stock-tab" data-bs-toggle="tab" data-bs-target="#out-of-stock" type="button">
+                <i class="fas fa-times-circle me-1"></i> نفذ المخزون
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="transfers-tab" data-bs-toggle="tab" data-bs-target="#transfers" type="button">
+                <i class="fas fa-exchange-alt me-1"></i> التحويلات
+              </button>
+            </li>
+          </ul>
+          
+          <div class="search-box">
+            <input type="text" class="form-control" placeholder="بحث في المخزون...">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="tab-content" id="inventoryTabsContent">
+            <div class="tab-pane fade show active" id="all" role="tabpanel">
+              <div class="table-responsive">
+                <table class="table table-hover" id="inventoryTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>المنتج</th>
+                      <th>الرمز</th>
+                      <th>الفئة</th>
+                      <th>الكمية المتوفرة</th>
+                      <th>سعر التكلفة</th>
+                      <th>سعر البيع</th>
+                      <th>الحالة</th>
+                      <th>الإجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img src="https://via.placeholder.com/50" alt="Product" class="product-image me-2">
+                          <div>
+                            <div class="fw-medium">هاتف ذكي XYZ</div>
+                            <small class="text-muted">PRD-1001</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>PRD-1001</td>
+                      <td>إلكترونيات</td>
+                      <td>
+                        <span class="high-stock">245</span>
+                        <small class="text-muted d-block">الحد الأدنى: 10</small>
+                      </td>
+                      <td>1,200 ر.س</td>
+                      <td>1,800 ر.س</td>
+                      <td><span class="badge bg-success">متوفر</span></td>
+                      <td class="action-buttons">
+                        <button class="btn btn-sm btn-outline-primary" title="عرض">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" title="تعديل">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img src="https://via.placeholder.com/50" alt="Product" class="product-image me-2">
+                          <div>
+                            <div class="fw-medium">حاسوب محمول ABC</div>
+                            <small class="text-muted">PRD-1002</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>PRD-1002</td>
+                      <td>إلكترونيات</td>
+                      <td>
+                        <span class="medium-stock">8</span>
+                        <small class="text-muted d-block">الحد الأدنى: 5</small>
+                      </td>
+                      <td>2,800 ر.س</td>
+                      <td>3,500 ر.س</td>
+                      <td><span class="badge bg-warning">منخفض</span></td>
+                      <td class="action-buttons">
+                        <button class="btn btn-sm btn-outline-primary" title="عرض">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" title="تعديل">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img src="https://via.placeholder.com/50" alt="Product" class="product-image me-2">
+                          <div>
+                            <div class="fw-medium">سماعات لاسلكية</div>
+                            <small class="text-muted">PRD-1003</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>PRD-1003</td>
+                      <td>ملحقات</td>
+                      <td>
+                        <span class="low-stock">0</span>
+                        <small class="text-muted d-block">الحد الأدنى: 15</small>
+                      </td>
+                      <td>150 ر.س</td>
+                      <td>250 ر.س</td>
+                      <td><span class="badge bg-danger">منتهي</span></td>
+                      <td class="action-buttons">
+                        <button class="btn btn-sm btn-outline-primary" title="عرض">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" title="تعديل">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- محتوى التبويبات الأخرى -->
+            <div class="tab-pane fade" id="low-stock" role="tabpanel">
+              <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                هناك 15 منتج منخفضة المخزون وتحتاج إلى إعادة طلب.
+              </div>
+              <!-- جدول المنتجات منخفضة المخزون -->
+            </div>
+            
+            <div class="tab-pane fade" id="out-of-stock" role="tabpanel">
+              <div class="alert alert-danger">
+                <i class="fas fa-times-circle me-2"></i>
+                هناك 8 منتجات منتهية من المخزون.
+              </div>
+              <!-- جدول المنتجات المنتهية -->
+            </div>
+            
+            <div class="tab-pane fade" id="transfers" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>تحويلات المخزون</h5>
+                <button class="btn btn-sm btn-primary">
+                  <i class="fas fa-plus"></i> إضافة تحويل
+                </button>
+              </div>
+              <!-- جدول تحويلات المخزون -->
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>رقم التحويل</th>
+                      <th>التاريخ</th>
+                      <th>من</th>
+                      <th>إلى</th>
+                      <th>المنتجات</th>
+                      <th>الحالة</th>
+                      <th>الإجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>TRF-2023-001</td>
+                      <td>2023-06-15</td>
+                      <td>المستودع الرئيسي</td>
+                      <td>فرع الرياض</td>
+                      <td>5 عناصر</td>
+                      <td><span class="badge bg-success">مكتمل</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- نموذج إضافة حركة مخزون -->
+  <div class="modal fade" id="addInventoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">إضافة حركة مخزون</h5>
+          <button type="button" class="btn-close" onclick="closeModal('addInventoryModal')" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form id="inventoryForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">نوع الحركة <span class="text-danger">*</span></label>
+                  <select id="transactionType" name="transaction_type" class="form-select" required>
+                    <option value="">اختر نوع الحركة</option>
+                    <option value="purchase">شراء</option>
+                    <option value="sale">بيع</option>
+                    <option value="transfer">تحويل</option>
+                    <option value="adjustment">تعديل</option>
+                    <option value="return">مرتجع</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">التاريخ <span class="text-danger">*</span></label>
+                  <input type="date" id="transactionDate" name="transaction_date" class="form-control" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">المنتج <span class="text-danger">*</span></label>
+                  <select id="productSelect" name="product_id" class="form-select" required>
+                    <option value="">ابحث عن منتج...</option>
+                    <option value="1">هاتف ذكي XYZ (PRD-1001)</option>
+                    <option value="2">حاسوب محمول ABC (PRD-1002)</option>
+                    <option value="3">سماعات لاسلكية (PRD-1003)</option>
+                  </select>
+                  
+                  <!-- قسم إضافة منتج جديد -->
+                  <div class="mt-2">
+                    <div class="d-flex gap-2">
+                      <button type="button" id="quickAddProductBtn" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-plus"></i> إضافة منتج سريع
+                      </button>
+                      <button type="button" id="fullAddProductBtn" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-plus-circle"></i> إضافة منتج كامل
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- حقل إدخال اسم المنتج الجديد (مخفي افتراضيًا) -->
+                  <div id="quickAddProductContainer" class="mt-3" style="display: none;">
+                    <div class="card border-success">
+                      <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-plus"></i> إضافة منتج جديد</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="mb-3">
+                          <label class="form-label">اسم المنتج الجديد <span class="text-danger">*</span></label>
+                          <input type="text" id="quickProductName" class="form-control" placeholder="أدخل اسم المنتج الجديد">
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label class="form-label">الفئة</label>
+                            <select id="quickProductCategory" class="form-select">
+                              <option value="عام">عام</option>
+                              <option value="إلكترونيات">إلكترونيات</option>
+                              <option value="ملحقات">ملحقات</option>
+                              <option value="أجهزة كمبيوتر">أجهزة كمبيوتر</option>
+                              <option value="جوالات">جوالات</option>
+                              <option value="طابعات">طابعات</option>
+                              <option value="مستهلكات">مستهلكات</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label">الحد الأدنى للمخزون</label>
+                            <input type="number" id="quickProductMinStock" class="form-control" value="5" min="0">
+                          </div>
+                        </div>
+                        <div class="mt-3">
+                          <button type="button" id="confirmQuickAddBtn" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i> تأكيد الإضافة
+                          </button>
+                          <button type="button" id="cancelQuickAddBtn" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times"></i> إلغاء
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">الكمية <span class="text-danger">*</span></label>
+                  <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">السعر <span class="text-danger">*</span></label>
+                  <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">الفرع/المستودع <span class="text-danger">*</span></label>
+                  <select id="warehouseSelect" name="warehouse_id" class="form-select" required>
+                    <option value="">اختر الفرع/المستودع</option>
+                    <option value="1">المستودع الرئيسي</option>
+                    <option value="2">فرع الرياض</option>
+                    <option value="3">فرع جدة</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">الملاحظات</label>
+                  <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-outline-secondary me-2" onclick="closeModal('addInventoryModal')">إلغاء</button>
+              <button type="submit" id="saveInventoryBtn" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> حفظ الحركة
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- نموذج إضافة منتج جديد -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">إضافة منتج جديد</h5>
+          <button type="button" class="btn-close" onclick="closeModal('addProductModal')" aria-label="إغلاق"></button>
+        </div>
+        <div class="modal-body">
+          <form id="productForm">
+            <div class="mb-3">
+              <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
+              <input type="text" id="productName" name="name" class="form-control" required>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">الفئة</label>
+                  <select id="productCategory" name="category" class="form-select">
+                    <option value="إلكترونيات">إلكترونيات</option>
+                    <option value="ملحقات">ملحقات</option>
+                    <option value="أجهزة كمبيوتر">أجهزة كمبيوتر</option>
+                    <option value="جوالات">جوالات</option>
+                    <option value="طابعات">طابعات</option>
+                    <option value="مستهلكات">مستهلكات</option>
+                    <option value="عام">عام</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">الرمز (SKU)</label>
+                  <input type="text" id="productSku" name="sku" class="form-control" placeholder="سيتم إنشاؤه تلقائيًا">
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">سعر التكلفة <span class="text-danger">*</span></label>
+                  <input type="number" id="productCostPrice" name="costPrice" class="form-control" step="0.01" min="0" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">سعر البيع <span class="text-danger">*</span></label>
+                  <input type="number" id="productSellingPrice" name="sellingPrice" class="form-control" step="0.01" min="0" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">المخزون الأولي</label>
+                  <input type="number" id="productInitialStock" name="quantity" class="form-control" min="0" value="0">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">الحد الأدنى للمخزون</label>
+                  <input type="number" id="productMinStock" name="minQuantity" class="form-control" min="0" value="5">
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">صورة المنتج</label>
+              <input type="text" id="productImage" name="image" class="form-control" placeholder="رابط الصورة (اختياري)">
+            </div>
+            
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-outline-secondary me-2" onclick="closeModal('addProductModal')">إلغاء</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> حفظ المنتج
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Select2 (للعمليات المعقدة) -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="js/inventory.js"></script>
+  
+  <script>
+    // دوال مساعدة للتعامل مع النوافذ المنبثقة (Vanilla JS)
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+      }
+    }
+    
+    function showModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'block';
+        modal.classList.add('show');
+      }
+    }
+    
+    // إغلاق النوافذ المنبثقة عند النقر خارجها
+    document.addEventListener('DOMContentLoaded', function() {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        modal.addEventListener('click', function(event) {
+          if (event.target === this) {
+            this.style.display = 'none';
+            this.classList.remove('show');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

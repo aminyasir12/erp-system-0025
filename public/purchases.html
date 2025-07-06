@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المشتريات - نظام إدارة الأعمال</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/main-styles.css">
+  <link rel="stylesheet" href="css/modal-styles.css">
+  <style>
+    /* Styles for purchases page */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .status-draft {
+      background-color: rgba(113, 128, 150, 0.1);
+      color: #718096;
+    }
+    
+    .status-ordered {
+      background-color: rgba(49, 130, 206, 0.1);
+      color: #3182CE;
+    }
+    
+    .status-received {
+      background-color: rgba(56, 161, 105, 0.1);
+      color: #38A169;
+    }
+    
+    .status-cancelled {
+      background-color: rgba(229, 62, 62, 0.1);
+      color: #E53E3E;
+    }
+    
+    .cancelled-row {
+      background-color: rgba(229, 62, 62, 0.05);
+    }
+    
+    .cancelled-row td {
+      color: #718096;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-view, .btn-edit, .btn-receive, .btn-cancel {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .btn-view {
+      color: #3182CE;
+    }
+    
+    .btn-edit {
+      color: #DD6B20;
+    }
+    
+    .btn-receive {
+      color: #38A169;
+    }
+    
+    .btn-cancel {
+      color: #E53E3E;
+    }
+    
+    /* Form styles */
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .form-group {
+      flex: 1;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: 4px;
+    }
+    
+    /* Table styles */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .table th, .table td {
+      padding: 12px 15px;
+      text-align: right;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    
+    .table th {
+      background-color: #F7FAFC;
+      font-weight: 600;
+    }
+    
+    /* Filter styles */
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-item {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    /* Summary cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    
+    .summary-title {
+      color: #718096;
+      font-size: 0.875rem;
+      margin-bottom: 10px;
+    }
+    
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    /* Utility classes */
+    .text-right {
+      text-align: right;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .mt-3 {
+      margin-top: 15px;
+    }
+    
+    .mb-3 {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="app-logo">
+        <i class="fas fa-store"></i>
+        <span>نظام إدارة الأعمال</span>
+      </div>
+      <div class="app-search">
+        <input type="text" class="search-input" placeholder="بحث...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <div class="app-actions">
+        <button class="action-btn">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-cog"></i>
+        </button>
+        <div class="user-menu">
+          <button class="user-btn" id="userMenuBtn">
+            <div class="user-avatar">أ</div>
+            <div class="user-info">
+              <div class="user-name" id="username">أحمد محمد</div>
+              <div class="user-role">مدير</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="app-main">
+      <aside class="app-sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">القائمة الرئيسية</h3>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="dashboard.html" class="sidebar-menu-link">
+                <i class="fas fa-tachometer-alt sidebar-menu-icon"></i>
+                <span>لوحة التحكم</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="sales.html" class="sidebar-menu-link">
+                <i class="fas fa-shopping-cart sidebar-menu-icon"></i>
+                <span>المبيعات</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="purchases.html" class="sidebar-menu-link active">
+                <i class="fas fa-truck sidebar-menu-icon"></i>
+                <span>المشتريات</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="inventory.html" class="sidebar-menu-link">
+                <i class="fas fa-boxes sidebar-menu-icon"></i>
+                <span>المخزون</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="products.html" class="sidebar-menu-link">
+                <i class="fas fa-box sidebar-menu-icon"></i>
+                <span>المنتجات</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">الإدارة</h3>
+          <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+              <a href="accounting.html" class="sidebar-menu-link">
+                <i class="fas fa-calculator sidebar-menu-icon"></i>
+                <span>الحسابات</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="hr.html" class="sidebar-menu-link">
+                <i class="fas fa-users sidebar-menu-icon"></i>
+                <span>الموارد البشرية</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="reports.html" class="sidebar-menu-link">
+                <i class="fas fa-chart-bar sidebar-menu-icon"></i>
+                <span>التقارير</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a href="settings.html" class="sidebar-menu-link">
+                <i class="fas fa-cog sidebar-menu-icon"></i>
+                <span>الإعدادات</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <div class="app-content">
+        <div class="page-header">
+          <h1 class="page-title">إدارة المشتريات</h1>
+          <div class="page-actions">
+            <button class="btn btn-primary" id="newPurchaseBtn">
+              <i class="fas fa-plus btn-icon"></i>
+              <span>أمر شراء جديد</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="summary-title">إجمالي المشتريات (هذا الشهر)</div>
+            <div class="summary-value">78,500 ريال</div>
+            <div class="summary-change change-up">
+              <span>+15.2%</span>
+              <i class="fas fa-arrow-up change-icon"></i>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">عدد أوامر الشراء (هذا الشهر)</div>
+            <div class="summary-value">42</div>
+            <div class="summary-change change-up">
+              <span>+5.0%</span>
+              <i class="fas fa-arrow-up change-icon"></i>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">متوسط قيمة أمر الشراء</div>
+            <div class="summary-value">1,869 ريال</div>
+            <div class="summary-change change-up">
+              <span>+9.7%</span>
+              <i class="fas fa-arrow-up change-icon"></i>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">المبالغ المستحقة للموردين</div>
+            <div class="summary-value">32,450 ريال</div>
+            <div class="summary-change change-down">
+              <span>-3.8%</span>
+              <i class="fas fa-arrow-down change-icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">أوامر الشراء</h2>
+            <div class="filters">
+              <div class="filter-item">
+                <select class="form-select" id="statusFilter">
+                  <option value="">جميع الحالات</option>
+                  <option value="draft">مسودة</option>
+                  <option value="ordered">تم الطلب</option>
+                  <option value="received">تم الاستلام</option>
+                  <option value="cancelled">ملغي</option>
+                </select>
+              </div>
+              <div class="filter-item date-range">
+                <input type="date" class="form-control date-input" id="startDate">
+                <span>إلى</span>
+                <input type="date" class="form-control date-input" id="endDate">
+                <button class="btn btn-outline" id="dateFilterBtn">
+                  <i class="fas fa-filter"></i>
+                </button>
+              </div>
+              <div class="search-box">
+                <input type="text" class="form-control" placeholder="بحث..." id="searchInput">
+                <i class="fas fa-search search-icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>رقم أمر الشراء</th>
+                    <th>التاريخ</th>
+                    <th>المورد</th>
+                    <th>المبلغ</th>
+                    <th>الحالة</th>
+                    <th>المدفوع / الإجمالي</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="purchasesTableBody">
+                  <!-- سيتم تعبئة هذا الجدول ديناميكياً -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- نافذة إنشاء أمر شراء جديد -->
+  <div id="purchaseModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">إنشاء أمر شراء جديد</h3>
+          <button class="close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="purchaseForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">المورد</label>
+                <select id="supplierSelect" class="form-control">
+                  <option value="">اختر المورد...</option>
+                  <!-- سيتم تعبئة هذه القائمة ديناميكياً -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">تاريخ الاستحقاق</label>
+                <input type="date" id="dueDateInput" class="form-control">
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="form-label">ملاحظات</label>
+            <textarea id="notesInput" class="form-control" rows="2"></textarea>
+          </div>
+
+          <h4>إضافة منتجات</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">المنتج</label>
+              <select id="productSelect" class="form-control">
+                <option value="">اختر المنتج...</option>
+                <!-- سيتم تعبئة هذه القائمة ديناميكياً -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">الكمية</label>
+              <input type="number" id="quantityInput" class="form-control" value="1" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">سعر الوحدة</label>
+              <input type="number" id="priceInput" class="form-control" step="0.01">
+            </div>
+            <div class="form-group" style="flex: 0 0 auto;">
+              <label class="form-label">&nbsp;</label>
+              <button type="button" id="addProductBtn" class="btn btn-primary form-control">
+                <i class="fas fa-plus"></i> إضافة
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive mt-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>المنتج</th>
+                  <th>الكمية</th>
+                  <th>الوحدة</th>
+                  <th>السعر</th>
+                  <th>الإجمالي</th>
+                  <th>حذف</th>
+                </tr>
+              </thead>
+              <tbody id="purchaseItemsBody">
+                <tr>
+                  <td colspan="6" class="text-center">لم يتم إضافة منتجات بعد</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="invoice-totals">
+            <div class="total-row">
+              <div class="total-label">المجموع الفرعي:</div>
+              <div class="total-value" id="subtotal">0.00 ريال</div>
+            </div>
+            <div class="total-row">
+              <div class="total-label">الضريبة (15%):</div>
+              <div class="total-value" id="tax">0.00 ريال</div>
+            </div>
+            <div class="total-row">
+              <div class="total-label grand-total">الإجمالي:</div>
+              <div class="total-value grand-total" id="total">0.00 ريال</div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline close-btn">إلغاء</button>
+        <button type="submit" form="purchaseForm" class="btn btn-primary">حفظ أمر الشراء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة تفاصيل أمر الشراء -->
+  <div id="purchaseDetailsModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">تفاصيل أمر الشراء</h3>
+          <button class="close">&times;</button>
+        </div>
+      <div class="modal-body">
+        <div class="invoice-details-grid">
+          <div class="detail-group">
+            <div class="detail-label">رقم أمر الشراء</div>
+            <div class="detail-value" id="detailsInvoiceNumber"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">التاريخ</div>
+            <div class="detail-value" id="detailsDate"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">تاريخ الاستحقاق</div>
+            <div class="detail-value" id="detailsDueDate"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">المورد</div>
+            <div class="detail-value" id="detailsSupplier"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">الحالة</div>
+            <div class="detail-value" id="detailsStatus"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">المبلغ المدفوع</div>
+            <div class="detail-value" id="detailsPaidAmount"></div>
+          </div>
+          <div class="detail-group">
+            <div class="detail-label">المبلغ المتبقي</div>
+            <div class="detail-value" id="detailsBalance"></div>
+          </div>
+        </div>
+
+        <div class="detail-group">
+          <div class="detail-label">ملاحظات</div>
+          <div class="detail-value" id="detailsNotes"></div>
+        </div>
+
+        <h4>المنتجات</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>المنتج</th>
+                <th>الكمية</th>
+                <th>السعر</th>
+                <th>الضريبة</th>
+                <th>الإجمالي</th>
+              </tr>
+            </thead>
+            <tbody id="detailsItemsBody">
+              <!-- سيتم تعبئة هذا الجدول ديناميكياً -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="invoice-totals">
+          <div class="total-row">
+            <div class="total-label">المجموع الفرعي:</div>
+            <div class="total-value" id="detailsSubtotal"></div>
+          </div>
+          <div class="total-row">
+            <div class="total-label">الضريبة:</div>
+            <div class="total-value" id="detailsTax"></div>
+          </div>
+          <div class="total-row">
+            <div class="total-label grand-total">الإجمالي:</div>
+            <div class="total-value grand-total" id="detailsTotal"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline close-btn">إغلاق</button>
+        <button type="button" id="updatePaymentBtn" class="btn btn-primary">
+          <i class="fas fa-money-bill-wave"></i> تسجيل دفعة
+        </button>
+        <button type="button" id="confirmOrderBtn" class="btn btn-secondary">
+          <i class="fas fa-check"></i> تأكيد الطلب
+        </button>
+        <button type="button" id="receiveItemsBtn" class="btn btn-success">
+          <i class="fas fa-truck-loading"></i> استلام البضاعة
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/purchases.js"></script>
+</body>
+</html>

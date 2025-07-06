@@ -1,0 +1,15 @@
+# إعدادات قاعدة البيانات
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASS=amin123
+DB_NAME=pos_system
+DB_PORT=5432
+
+# إعدادات JWT
+JWT_SECRET=0d29f00a8dc03946f95edd94e39c38f6ffc47d61172a3fe6409a442ae87474a613e9a4a23bb5914f46756355528e1a216fb2ccc0aca6b3ea0b5048eeb39040a4
+JWT_EXPIRES_IN=30d
+JWT_COOKIE_EXPIRE=30
+
+# إعدادات التطبيق
+NODE_ENV=development
+PORT=3000
